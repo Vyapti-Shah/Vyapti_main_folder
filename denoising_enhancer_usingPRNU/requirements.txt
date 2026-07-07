@@ -1,7 +1,0 @@
-opencv-python
-numpy
-tqdm
-matplotlib
-PyWavelets
-scikit-learn
-scipy
