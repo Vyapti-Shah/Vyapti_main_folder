@@ -1,0 +1,4 @@
+# Local model weights
+*.pth
+# Keep the video detector weights local-only
+resnext-lstm_trained_weights.pth
