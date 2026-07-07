@@ -1,0 +1,4 @@
+# Local model weights
+*.pth
+# Keep the EfficientNet weights local-only
+efficientnet_b0_ffpp_c23.pth
