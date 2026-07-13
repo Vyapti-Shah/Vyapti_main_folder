@@ -1,0 +1,466 @@
+{
+  "input_path": "mcu.mp4",
+  "media_type": "video",
+  "frame_count_analyzed": 8,
+  "frames": [
+    {
+      "frame_index": 0,
+      "timestamp_sec": 0.0,
+      "analysis": {
+        "scene_description": "A group of six men are seated in a row on black chairs, appearing to be at a panel or event. The background features a large, stylized star design. The men are dressed in business casual attire.",
+        "counts": {
+          "total_people": 6,
+          "total_animals": 0,
+          "specific_objects": {
+            "object_name": 6
+          }
+        },
+        "objects": [
+          {
+            "label": "chair",
+            "description": "Black chairs arranged in a row",
+            "approx_location": "center"
+          },
+          {
+            "label": "background",
+            "description": "A large, stylized star design with blue and purple lighting",
+            "approx_location": "back"
+          }
+        ],
+        "people": [
+          {
+            "description": "A man with a beard wearing a dark blue sweater and green pants, sitting on the left side of the image.",
+            "identity_guess": "Chris Evans",
+            "confidence": "high",
+            "action": "Sitting with a relaxed posture"
+          },
+          {
+            "description": "A man with a beard and a light brown suit, sitting in the middle of the image.",
+            "identity_guess": "Paul Rudd",
+            "confidence": "high",
+            "action": "Sitting with a neutral expression"
+          },
+          {
+            "description": "A man with a mustache and a black suit, sitting in the center of the image.",
+            "identity_guess": "Robert Downey Jr.",
+            "confidence": "high",
+            "action": "Sitting with a serious expression"
+          },
+          {
+            "description": "A man with short hair and a dark suit, sitting on the right side of the image.",
+            "identity_guess": "Tom Holland",
+            "confidence": "low",
+            "action": "Sitting with a neutral expression"
+          },
+          {
+            "description": "A man with a beard and a light-colored suit, sitting on the far right.",
+            "identity_guess": "Jeremy Renner",
+            "confidence": "low",
+            "action": "Sitting with a neutral expression"
+          },
+          {
+            "description": "A man with a beard and a dark suit, sitting on the far left.",
+            "identity_guess": "Michael B. Jordan",
+            "confidence": "high",
+            "action": "Sitting with a neutral expression"
+          }
+        ],
+        "entities_or_brands": [
+          "Marvel",
+          "Disney",
+          "Disney+",
+          "Disney Studios"
+        ],
+        "ocr_text": [
+          "Disney+",
+          "Disney Studios",
+          "Marvel",
+          "Marvel Studios",
+          "Disney+",
+          "Disney Studios"
+        ],
+        "notable_details": "The setting appears to be a promotional event or panel discussion. The background features a large, stylized star design, which is characteristic of a Marvel Studios event. The lighting is bright and focused on the participants.",
+        "computed_people_count": 6,
+        "computed_object_count": 2,
+        "computed_object_breakdown": {
+          "chair": 1,
+          "background": 1
+        }
+      }
+    },
+    {
+      "frame_index": 30,
+      "timestamp_sec": 1.0,
+      "analysis": {
+        "raw_output": "{\n  \"scene_description\": \"A group of six men are seated on a stage at what appears to be a movie premiere or press event, with a large promotional backdrop behind them. They are engaged in conversation, with one man in the center gesturing as he speaks.\",\n  \"counts\": {\n    \"total_people\": \"6\",\n    \"total_animals\": \"0\",\n    \"specific_objects\": {\n      \"object_name\": \"chair\": \"6\"\n    }\n  },\n  \"objects\": [\n    {\n      \"label\": \"chair\",\n      \"description\": \"Six black chairs arranged in a semi-circle, with one man sitting on a high back chair and the others on lower ones.\",\n      \"approx_location\": \"center\"\n    },\n    {\n      \"label\": \"backdrop\",\n      \"description\": \"A large promotional poster featuring a close-up of a person wearing a helmet and a face mask, likely from a movie.\",\n      \"approx_location\": \"background\"\n    }\n  ],\n  \"people\": [\n    {\n      \"description\": \"A man in a black jacket and a black baseball cap, smiling and leaning back in a chair.\",\n      \"identity_guess\": \"John Krasinski\",\n      \"confidence\": \"high\",\n      \"action\": \"Smiling and looking to his right.\"\n    },\n    {\n      \"description\": \"A man in a red sweater, standing and gesturing with his right hand as he speaks.\",\n      \"identity_guess\": \"Benedict Cumberbatch\",\n      \"confidence\": \"high\",\n      \"action\": \"Speaking and gesturing with his right hand.\"\n    },\n    {\n      \"description\": \"A man in a blue jacket, sitting in the foreground with his legs crossed.\",\n      \"identity_guess\": \"Samuel L. Jackson\",\n      \"confidence\": \"low\",\n      \"action\": \"Sitting and looking forward.\"\n    },\n    {\n      \"description\": \"A man in a dark jacket and a grey shirt, sitting on the right side of the stage.\",\n      \"identity_guess\": \"Jared Leto\",\n      \"confidence\": \"low\",\n      \"action\": \"Smiling and holding a glass of water.\"\n    },\n    {\n      \"description\": \"A man with a beard and a dark shirt, sitting on the far right.\",\n      \"identity_guess\": \"Chris Evans\",\n      \"confidence\": \"high\",\n      \"action\": \"Looking to his left with a thoughtful expression.\"\n    },\n    {\n      \"description\": \"A woman with blonde hair, sitting on the far left of the image.\",\n      \"identity_guess\": null,\n      \"confidence\": \"low\",\n      \"action\": \"Sitting with her back to the camera.\"\n    }\n  ],\n  \"entities_or_brands\": [\n    \"Marvel\",\n    \"Captain America\"\n  ],\n  \"ocr_text\": [\n    \"Captain America\",\n    \"Marvel\",\n    \"Marvel Studios\",\n    \"The Avengers\"\n  ],\n  \"notable_details\": \"The event appears to be a movie premiere or press event for a superhero film, likely related to the Marvel Cinematic Universe. The backdrop features a close-up of a character in a helmet and mask, consistent with the character of Captain America. The men are dressed in casual attire, and the atmosphere is relaxed and friendly.\"\n}",
+        "parse_error": true
+      }
+    },
+    {
+      "frame_index": 60,
+      "timestamp_sec": 2.0,
+      "analysis": {
+        "raw_output": "{\n  \"scene_description\": \"A group of actors and crew members are seated on a stage at what appears to be a movie premiere or press event, with a large promotional backdrop behind them.\",\n  \"counts\": {\n    \"total_people\": 7,\n    \"total_animals\": 0,\n    \"specific_objects\": {\n      \"object_name\": 0\n    }\n  },\n  \"objects\": [\n    {\n      \"label\": \"chair\",\n      \"description\": \"Several black chairs are arranged in a row for the seated individuals.\",\n      \"approx_location\": \"center\"\n    },\n    {\n      \"label\": \"backdrop\",\n      \"description\": \"A large movie poster featuring a close-up of a character in a helmet, likely from a superhero film.\",\n      \"approx_location\": \"background\"\n    },\n    {\n      \"label\": \"water bottle\",\n      \"description\": \"A clear plastic water bottle is held by one of the individuals on the right.\",\n      \"approx_location\": \"right\"\n    }\n  ],\n  \"people\": [\n    {\n      \"description\": \"A man wearing a black jacket and a red baseball cap, sitting with his legs crossed.\",\n      \"identity_guess\": \"Samuel L. Jackson\",\n      \"confidence\": \"high\",\n      \"action\": \"Smiling and looking towards the audience.\"\n    },\n    {\n      \"description\": \"A man in a red sweater, sitting behind the man in the black jacket.\",\n      \"identity_guess\": \"Josh Brolin\",\n      \"confidence\": \"high\",\n      \"action\": \"Speaking and gesturing with his right hand.\"\n    },\n    {\n      \"description\": \"A man in a dark blue jacket, sitting in the foreground with his legs crossed.\",\n      \"identity_guess\": \"Chris Evans\",\n      \"confidence\": \"high\",\n      \"action\": \"Looking forward with a neutral expression.\"\n    },\n    {\n      \"description\": \"A man in a dark suit, sitting on the right side of the stage.\",\n      \"identity_guess\": \"Javier Bardem\",\n      \"confidence\": \"low\",\n      \"action\": \"Sipping water from a bottle.\"\n    },\n    {\n      \"description\": \"A man with a beard and a dark shirt, sitting on the right side of the stage.\",\n      \"identity_guess\": \"Chris Evans\",\n      \"confidence\": \"high\",\n      \"action\": \"Looking down and to his left.\"\n    },\n    {\n      \"description\": \"A woman with blonde hair, sitting on the left side of the stage.\",\n      \"identity_guess\": null,\n      \"confidence\": \"low\",\n      \"action\": \"Sitting with her back to the camera.\"\n    },\n    {\n      \"description\": \"A man in a dark suit, sitting on the right side of the stage.\",\n      \"identity_guess\": \"Chris Evans\",\n      \"confidence\": \"high\",\n      \"action\": \"Sitting with his legs crossed.\"\n    }\n  ],\n  \"entities_or_brands\": [\n    \"Marvel\",\n    \"Iron Man\",\n    \"Captain America\",\n    \"The Avengers\"\n  ],\n  \"ocr_text\": [\n    \"Captain America\",\n    \"The Avengers\",\n    \"Iron Man\",\n    \"Avengers\",\n    \"Marvel\",\n    \"Marvel Studios\",\n    \"Marvel\",\n    \"Marvel\",\n    \"Marvel\",\n    \"Marvel\",\n    \"Marvel\",\n    \"Marvel\",\n    \"Marvel\",\n    \"Marvel\",\n    \"Marvel\",\n    \"Marvel\",\n    \"Marvel\",\n    \"Marvel\",\n    \"Marvel\",\n    \"Marvel\",\n    \"Marvel\",\n    \"Marvel\",\n    \"Marvel\",\n    \"Marvel\",\n    \"Marvel\",\n    \"Marvel\",\n    \"Marvel\",\n    \"Marvel\",\n    \"Marvel\",\n    \"Marvel\",\n    \"Marvel\",\n    \"Marvel\",\n    \"Marvel\",\n    \"Marvel\",\n    \"Marvel\",\n    \"Marvel\",\n    \"Marvel\",\n    \"Marvel\",\n    \"Marvel\",\n    \"Marvel\",\n    \"Marvel\",\n    \"Marvel\",\n    \"Marvel\",\n    \"Marvel\",\n    \"Marvel\",\n    \"Marvel\",\n    \"Marvel\",\n    \"Marvel\",\n    \"Marvel\",\n    \"Marvel\",\n    \"Marvel\",\n    \"Marvel\",\n    \"Marvel\",\n    \"Marvel\",\n    \"Marvel\",\n    \"Marvel\",\n    \"Marvel\",\n    \"Marvel\",\n    \"Marvel\",\n    \"Marvel\",\n    \"Marvel\",\n    \"Marvel\",\n    \"Marvel\",\n    \"Marvel\",\n    \"Marvel\",\n    \"Marvel\",\n    \"Marvel\",\n    \"Marvel\",\n    \"Marvel\",\n    \"Marvel\",\n    \"Marvel\",\n    \"Marvel\",\n    \"Marvel\",\n    \"Marvel\",\n    \"Marvel\",\n    \"Marvel\",\n    \"Marvel\",\n    \"Marvel\",\n    \"Marvel\",\n    \"Marvel\",\n    \"Marvel\",\n    \"Marvel\",\n    \"Marvel\",\n    \"Marvel\",\n    \"Marvel\",\n    \"Marvel\",\n    \"Marvel\",\n    \"Marvel\",\n    \"Marvel\",\n    \"Marvel\",\n    \"Marvel\",\n    \"Marvel\",\n    \"Marvel\",\n    \"Marvel\",\n    \"Marvel\",\n   ",
+        "parse_error": true
+      }
+    },
+    {
+      "frame_index": 90,
+      "timestamp_sec": 3.0,
+      "analysis": {
+        "scene_description": "A group of men are seated on a stage at what appears to be a panel discussion or event, with a large Captain America shield backdrop.",
+        "counts": {
+          "total_people": 10,
+          "total_animals": 0,
+          "specific_objects": {
+            "object_name": 10
+          }
+        },
+        "objects": [
+          {
+            "label": "chair",
+            "description": "black chairs arranged in a row",
+            "approx_location": "center"
+          },
+          {
+            "label": "backdrop",
+            "description": "large graphic of a Captain America shield",
+            "approx_location": "background"
+          }
+        ],
+        "people": [
+          {
+            "description": "A man in a red sweater sitting in the front row, smiling.",
+            "identity_guess": "Chris Evans",
+            "confidence": "high",
+            "action": "sitting and smiling"
+          },
+          {
+            "description": "A man in a dark suit and tie, sitting in the center.",
+            "identity_guess": "Chris Evans",
+            "confidence": "high",
+            "action": "sitting and smiling"
+          },
+          {
+            "description": "A man in a light-colored jacket and glasses, sitting in the center.",
+            "identity_guess": "Robert Downey Jr.",
+            "confidence": "high",
+            "action": "sitting and smiling"
+          },
+          {
+            "description": "A man in a dark suit, sitting in the front row.",
+            "identity_guess": "Robert Downey Jr.",
+            "confidence": "high",
+            "action": "sitting and smiling"
+          },
+          {
+            "description": "A man in a dark jacket, sitting in the front row.",
+            "identity_guess": "Robert Downey Jr.",
+            "confidence": "high",
+            "action": "sitting and smiling"
+          },
+          {
+            "description": "A man in a dark suit, sitting in the front row.",
+            "identity_guess": "Robert Downey Jr.",
+            "confidence": "high",
+            "action": "sitting and smiling"
+          },
+          {
+            "description": "A man in a dark jacket, sitting in the front row.",
+            "identity_guess": "Robert Downey Jr.",
+            "confidence": "high",
+            "action": "sitting and smiling"
+          },
+          {
+            "description": "A man in a dark jacket, sitting in the front row.",
+            "identity_guess": "Robert Downey Jr.",
+            "confidence": "high",
+            "action": "sitting and smiling"
+          },
+          {
+            "description": "A man in a dark jacket, sitting in the front row.",
+            "identity_guess": "Robert Downey Jr.",
+            "confidence": "high",
+            "action": "sitting and smiling"
+          },
+          {
+            "description": "A man in a dark jacket, sitting in the front row.",
+            "identity_guess": "Robert Downey Jr.",
+            "confidence": "high",
+            "action": "sitting and smiling"
+          }
+        ],
+        "entities_or_brands": [
+          "Captain America"
+        ],
+        "ocr_text": [
+          "Captain America"
+        ],
+        "notable_details": "The event appears to be a promotional panel for a superhero film, with the Captain America shield prominently displayed in the background. The attendees are dressed in casual to smart-casual attire and are smiling and engaged in conversation.",
+        "computed_people_count": 10,
+        "computed_object_count": 2,
+        "computed_object_breakdown": {
+          "chair": 1,
+          "backdrop": 1
+        }
+      }
+    },
+    {
+      "frame_index": 120,
+      "timestamp_sec": 4.0,
+      "analysis": {
+        "raw_output": "{\n  \"scene_description\": \"A group of actors and crew members are seated on a stage during a panel discussion, likely for a film or television event, with a large Captain America shield backdrop.\",\n  \"counts\": {\n    \"total_people\": 11,\n    \"total_animals\": 0,\n    \"specific_objects\": {\n      \"object_name\": 11\n    }\n  },\n  \"objects\": [\n    {\n      \"label\": \"chair\",\n      \"description\": \"black chairs arranged in a row on a stage\",\n      \"approx_location\": \"center\"\n    },\n    {\n      \"label\": \"screen\",\n      \"description\": \"large screen with a Captain America shield logo\",\n      \"approx_location\": \"background\"\n    },\n    {\n      \"label\": \"person\",\n      \"description\": \"a man wearing a red sweater\",\n      \"approx_location\": \"left\"\n    },\n    {\n      \"label\": \"person\",\n      \"description\": \"a man in a green jacket\",\n      \"approx_location\": \"center\"\n    },\n    {\n      \"label\": \"person\",\n      \"description\": \"a man in a suit with a green tie\",\n      \"approx_location\": \"center\"\n    },\n    {\n      \"label\": \"person\",\n      \"description\": \"a man with glasses and a white shirt\",\n      \"approx_location\": \"center\"\n    },\n    {\n      \"label\": \"person\",\n      \"description\": \"a man in a pink jacket\",\n      \"approx_location\": \"right\"\n    },\n    {\n      \"label\": \"person\",\n      \"description\": \"a man in a dark suit\",\n      \"approx_location\": \"left\"\n    },\n    {\n      \"label\": \"person\",\n      \"description\": \"a man in a blue shirt\",\n      \"approx_location\": \"left\"\n    },\n    {\n      \"label\": \"person\",\n      \"description\": \"a man in a black jacket\",\n      \"approx_location\": \"right\"\n    },\n    {\n      \"label\": \"person\",\n      \"description\": \"a man in a black jacket\",\n      \"approx_location\": \"left\"\n    }\n  ],\n  \"people\": [\n    {\n      \"description\": \"a man in a red sweater sitting in a chair\",\n      \"identity_guess\": \"unknown\",\n      \"confidence\": \"low\",\n      \"action\": \"sitting and smiling\"\n    },\n    {\n      \"description\": \"a man in a dark suit sitting in a chair\",\n      \"identity_guess\": \"unknown\",\n      \"confidence\": \"low\",\n      \"action\": \"sitting and smiling\"\n    },\n    {\n      \"description\": \"a man in a green jacket sitting in a chair\",\n      \"identity_guess\": \"unknown\",\n      \"confidence\": \"low\",\n      \"action\": \"sitting and smiling\"\n    },\n    {\n      \"description\": \"a man in a suit with a green tie sitting in a chair\",\n      \"identity_guess\": \"unknown\",\n      \"confidence\": \"low\",\n      \"action\": \"sitting and smiling\"\n    },\n    {\n      \"description\": \"a man in a suit with a white shirt and glasses sitting in a chair\",\n      \"identity_guess\": \"unknown\",\n      \"confidence\": \"low\",\n      \"action\": \"sitting and smiling\"\n    },\n    {\n      \"description\": \"a man in a pink jacket sitting in a chair\",\n      \"identity_guess\": \"unknown\",\n      \"confidence\": \"low\",\n      \"action\": \"sitting and smiling\"\n    },\n    {\n      \"description\": \"a man in a dark suit sitting in a chair\",\n      \"identity_guess\": \"unknown\",\n      \"confidence\": \"low\",\n      \"action\": \"sitting and smiling\"\n    },\n    {\n      \"description\": \"a man in a blue shirt sitting in a chair\",\n      \"identity_guess\": \"unknown\",\n      \"confidence\": \"low\",\n      \"action\": \"sitting and smiling\"\n    },\n    {\n      \"description\": \"a man in a black jacket sitting in a chair\",\n      \"identity_guess\": \"unknown\",\n      \"confidence\": \"low\",\n      \"action\": \"sitting and smiling\"\n    },\n    {\n      \"description\": \"a man in a black jacket sitting in a chair\",\n      \"identity_guess\": \"unknown\",\n      \"confidence\": \"low\",\n      \"action\": \"sitting and smiling\"\n    },\n    {\n      \"description\": \"a man in a black jacket sitting in a chair\",\n      \"identity_guess\": \"unknown\",\n      \"confidence\": \"low\",\n      \"action\": \"sitting and smiling\"\n    }\n  ],\n  \"entities_or_brands\": [\n    \"Captain America shield\"\n  ],\n  \"ocr_text\": [\n    \"Captain America shield\"\n  ],\n  \"notable_details\": \"The setting appears to be a panel discussion or event, likely related to a superhero film or series. The Captain America shield is prominently displayed on the backdrop. The people are dressed in casual",
+        "parse_error": true
+      }
+    },
+    {
+      "frame_index": 150,
+      "timestamp_sec": 4.99,
+      "analysis": {
+        "scene_description": "A group of male actors and crew members are seated on a stage at what appears to be a movie premiere or press event. The background is a large, stylized star-shaped design. The lighting is bright and focused on the individuals.",
+        "counts": {
+          "total_people": 7,
+          "total_animals": 0,
+          "specific_objects": {
+            "object_name": 7
+          }
+        },
+        "objects": [
+          {
+            "label": "chair",
+            "description": "Black chairs with a modern design, arranged in a row for the seated individuals.",
+            "approx_location": "center"
+          },
+          {
+            "label": "stage",
+            "description": "A stage with a large, illuminated, star-shaped backdrop.",
+            "approx_location": "background"
+          }
+        ],
+        "people": [
+          {
+            "description": "A man with a beard and a dark suit, sitting in a black chair.",
+            "identity_guess": "Chris Evans",
+            "confidence": "high",
+            "action": "Sitting with his legs crossed, looking forward."
+          },
+          {
+            "description": "A man with a beard and a light-colored suit, sitting in the center.",
+            "identity_guess": "Robert Downey Jr.",
+            "confidence": "high",
+            "action": "Sitting with his arms crossed, looking forward."
+          },
+          {
+            "description": "A man with a beard and a light-colored suit, sitting in the center.",
+            "identity_guess": "Paul Rudd",
+            "confidence": "high",
+            "action": "Sitting with his arms crossed, looking forward."
+          },
+          {
+            "description": "A man with a beard and a dark suit, sitting in the center.",
+            "identity_guess": "Jeremy Renner",
+            "confidence": "high",
+            "action": "Sitting with his arms crossed, looking forward."
+          },
+          {
+            "description": "A man with a beard and a dark suit, sitting in the center.",
+            "identity_guess": "Tom Holland",
+            "confidence": "high",
+            "action": "Sitting with his arms crossed, looking forward."
+          },
+          {
+            "description": "A man with a beard and a dark suit, sitting in the center.",
+            "identity_guess": "Jeremy Renner",
+            "confidence": "high",
+            "action": "Sitting with his arms crossed, looking forward."
+          },
+          {
+            "description": "A man with glasses and a light-colored suit, sitting on the right.",
+            "identity_guess": "John Krasinski",
+            "confidence": "high",
+            "action": "Sitting with his legs crossed, looking forward."
+          }
+        ],
+        "entities_or_brands": [
+          "Marvel Studios",
+          "Disney",
+          "Disney+",
+          "Disney Cruise Line"
+        ],
+        "ocr_text": [
+          "who is at the movie set"
+        ],
+        "notable_details": "The image appears to be from a movie premiere event. The text at the bottom suggests the scene is related to a movie set. The individuals are dressed in formal or semi-formal attire.",
+        "computed_people_count": 7,
+        "computed_object_count": 2,
+        "computed_object_breakdown": {
+          "chair": 1,
+          "stage": 1
+        }
+      }
+    },
+    {
+      "frame_index": 180,
+      "timestamp_sec": 5.99,
+      "analysis": {
+        "scene_description": "A group of men are seated on black chairs in what appears to be a panel discussion or event, with a large blue and silver geometric backdrop. The men are dressed in business casual attire and are looking in various directions.",
+        "counts": {
+          "total_people": 6,
+          "total_animals": 0,
+          "specific_objects": {
+            "object_name": 6
+          }
+        },
+        "objects": [
+          {
+            "label": "chair",
+            "description": "black leather chairs with metal legs",
+            "approx_location": "center"
+          },
+          {
+            "label": "backdrop",
+            "description": "large, geometric blue and silver structure",
+            "approx_location": "background"
+          }
+        ],
+        "people": [
+          {
+            "description": "man with a beard wearing a dark sweater and green pants, sitting on the left",
+            "identity_guess": "Chris Evans",
+            "confidence": "high",
+            "action": "sitting with his hands clasped"
+          },
+          {
+            "description": "man with a beard and a light brown suit, sitting in the center",
+            "identity_guess": "Robert Downey Jr.",
+            "confidence": "high",
+            "action": "leaning back in his chair"
+          },
+          {
+            "description": "man with a beard and a light brown suit, sitting behind Robert Downey Jr.",
+            "identity_guess": "Paul Rudd",
+            "confidence": "high",
+            "action": "sitting upright"
+          },
+          {
+            "description": "man with a beard and a dark jacket, sitting on the right",
+            "identity_guess": "Jeremy Renner",
+            "confidence": "high",
+            "action": "sitting with his hands clasped"
+          },
+          {
+            "description": "man with glasses and a light-colored jacket, sitting on the far right",
+            "identity_guess": "Tobias Menzies",
+            "confidence": "high",
+            "action": "sitting with his hands clasped"
+          },
+          {
+            "description": "man with a beard and a light brown suit, sitting on the far left",
+            "identity_guess": "Steve Carell",
+            "confidence": "low",
+            "action": "sitting with his hands clasped"
+          }
+        ],
+        "entities_or_brands": [
+          "Marvel",
+          "Iron Man"
+        ],
+        "ocr_text": [
+          "the big boss who has got the biggest trailer and why"
+        ],
+        "notable_details": "The image appears to be from a film or television event, possibly related to the Marvel Cinematic Universe, given the context and the presence of the character Iron Man. The men are seated in a row, and the text at the bottom suggests a discussion about a character or production.",
+        "computed_people_count": 6,
+        "computed_object_count": 2,
+        "computed_object_breakdown": {
+          "chair": 1,
+          "backdrop": 1
+        }
+      }
+    },
+    {
+      "frame_index": 210,
+      "timestamp_sec": 6.99,
+      "analysis": {
+        "scene_description": "A group of men are seated in chairs on a stage, likely at a panel or event, with a blue and purple geometric background. The men are dressed in business attire, and one man in the foreground is wearing glasses and a suit. The image includes a subtitle at the bottom.",
+        "counts": {
+          "total_people": 6,
+          "total_animals": 0,
+          "specific_objects": {
+            "object_name": 1,
+            "chair": 6
+          }
+        },
+        "objects": [
+          {
+            "label": "chair",
+            "description": "A black leather chair with a metal frame, occupied by several people.",
+            "approx_location": "center"
+          },
+          {
+            "label": "background",
+            "description": "A blue and purple geometric design on the wall behind the people.",
+            "approx_location": "background"
+          },
+          {
+            "label": "text",
+            "description": "A yellow text overlay at the bottom of the image.",
+            "approx_location": "bottom"
+          }
+        ],
+        "people": [
+          {
+            "description": "A man with a beard wearing a dark sweater and a green pants, sitting on the left side of the image.",
+            "identity_guess": "Chris Evans",
+            "confidence": "high",
+            "action": "Sitting with a relaxed posture, looking to the left."
+          },
+          {
+            "description": "A man with a beard and a light brown suit, sitting in the center background.",
+            "identity_guess": "Paul Rudd",
+            "confidence": "high",
+            "action": "Sitting upright with a serious expression."
+          },
+          {
+            "description": "A man with a mustache and a dark suit, sitting in the foreground.",
+            "identity_guess": "Robert Downey Jr.",
+            "confidence": "high",
+            "action": "Sitting with his head tilted slightly upward, looking forward."
+          },
+          {
+            "description": "A man with glasses and a light-colored jacket, sitting on the right side of the image.",
+            "identity_guess": "Taron Egerton",
+            "confidence": "high",
+            "action": "Sitting with his legs crossed and looking forward."
+          },
+          {
+            "description": "A man with a dark suit and a blue shirt, sitting in the background on the right.",
+            "identity_guess": "Jeremy Renner",
+            "confidence": "high",
+            "action": "Sitting with his hands clasped, looking down."
+          },
+          {
+            "description": "A man with a beard and a dark suit, sitting on the far left.",
+            "identity_guess": "Chris Evans",
+            "confidence": "high",
+            "action": "Sitting with a relaxed posture, looking forward."
+          }
+        ],
+        "entities_or_brands": [
+          "Marvel",
+          "Disney"
+        ],
+        "ocr_text": [
+          "the big boss who has got the biggest trailer and why"
+        ],
+        "notable_details": "The scene appears to be a panel discussion or interview, possibly related to a movie. The subtitle suggests a discussion about a character or film, with the phrase 'big boss' and 'biggest trailer'. The background has a blue and purple geometric design, which is characteristic of a Marvel Studios event.",
+        "computed_people_count": 6,
+        "computed_object_count": 3,
+        "computed_object_breakdown": {
+          "chair": 1,
+          "background": 1,
+          "text": 1
+        }
+      }
+    }
+  ]
+}
