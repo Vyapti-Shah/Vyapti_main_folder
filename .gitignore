@@ -1,8 +1,33 @@
+# Python environments
 venv/
 .venv/
+
+# Python cache files
 __pycache__/
 *.py[cod]
 *.pyo
 *.pyd
 .ipynb_checkpoints/
 .env
+
+# System files
+.DS_Store
+Thumbs.db
+
+# Media and model binaries
+*.mp4
+*.mov
+*.pth
+
+# Generated input/output folders
+input/
+input_videos/
+videos/
+outputs/
+results_folder*/
+
+# Generated images and data
+*.png
+*.jpg
+*.jpeg
+*.csv

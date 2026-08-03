@@ -1,0 +1,4 @@
+# Local model weights
+*.pth
+# Keep the DRUNet weights local-only
+drunet_color.pth
