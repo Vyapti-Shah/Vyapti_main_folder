@@ -1,0 +1,14 @@
+[
+  {
+    "image_path": "data\\input\\text\\FU.jpg",
+    "status": "success",
+    "output_image_path": "./data/output/text\\FU_text.png",
+    "detected_text": "FUCK YOU."
+  },
+  {
+    "image_path": "data\\input\\text\\text.png",
+    "status": "success",
+    "output_image_path": "./data/output/text\\text_text.png",
+    "detected_text": "OPTIIC"
+  }
+]

@@ -1,0 +1,8 @@
+[
+  {
+    "image_path": "data\\input\\digits\\optical.jpeg",
+    "status": "success",
+    "output_image_path": "./data/output/digits\\optical_text.png",
+    "detected_text": "241"
+  }
+]

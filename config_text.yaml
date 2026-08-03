@@ -1,0 +1,33 @@
+paths:
+  input_dir: "./data/input/text"
+  output_dir: "./data/output/text"
+
+fft:
+  peak_radius: 10
+  threshold_ratio: 0.15
+
+gabor:
+  ksize: 31
+  sigma: 4.0
+  lambd: 10.0
+  gamma: 0.5
+
+ocr:
+  model_name: "stepfun-ai/GOT-OCR2_0"
+  device: "auto"   # auto-detects cuda:0 if available, else cpu
+  batch_size: 8
+  batch_timeout_sec: 0.2
+
+batch:
+  num_workers: 1   # CPU-only OCR gains nothing from threads; avoids the shim race condition entirely
+  extensions: [".jpg", ".jpeg", ".png"]
+
+orientation:
+  blur_ksize: 9
+  blur_sigma: 2
+  min_mask_ratio: 0.005   # below this, treat as "found nothing" -> fallback
+
+classifier:
+  # Plain-text images (e.g. "OPTIC") -> ring rules OFF, so ring-shaped
+  # letters like O/Q/D go through OCR instead of being misread as 0/2/8.
+  enable_ring_rules: false
