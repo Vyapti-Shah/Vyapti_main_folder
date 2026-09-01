@@ -1,0 +1,69 @@
+# Standalone Track & Zoom.
+#
+#   docker compose up -d --build
+#   open http://localhost:13082
+#
+# SELF-CONTAINED: nothing here reads from, mounts, or calls any sibling
+# project. Everything it needs lives under this directory — source, data,
+# uploads, renders, and the SAM2 checkpoint (fetched on first boot into
+# ./models). You can copy this folder anywhere on its own and it will run.
+#
+# Ports avoid other stacks on a shared host only so they can coexist; there is
+# no other relationship. Override with TZ_FRONTEND_PORT / TZ_BACKEND_PORT.
+
+services:
+  backend:
+    build:
+      context: ./backend
+    image: track_and_zoom-backend:latest
+    restart: unless-stopped
+    ports:
+      - "${TZ_BACKEND_PORT:-18100}:8000"
+    environment:
+      TZ_DATA_DIR: /data
+      # This app's OWN weights directory, mounted from ./models below and
+      # populated on first boot. Set TZ_SAM2_AUTO_DOWNLOAD=false and drop the
+      # .pt in yourself on an air-gapped machine.
+      TZ_SAM2_WEIGHTS_DIR: /opt/models/sam2
+      TZ_SAM2_AUTO_DOWNLOAD: "${TZ_SAM2_AUTO_DOWNLOAD:-true}"
+      TZ_SAM2_MODEL: "${TZ_SAM2_MODEL:-sam2.1_hiera_base_plus}"
+      TZ_SAM2_DEVICE: "${TZ_SAM2_DEVICE:-cuda}"
+      # The feature's own knobs, all overridable without touching code.
+      # Keep in step with app/config.py — a default here silently overrides it.
+      TZ_FOLLOW_ZOOM_PADDING_SCALE: "${TZ_FOLLOW_ZOOM_PADDING_SCALE:-1.15}"
+      TZ_FOLLOW_ZOOM_PIP_SCALE: "${TZ_FOLLOW_ZOOM_PIP_SCALE:-0.32}"
+      TZ_FOLLOW_ZOOM_MAX_PREDICT_FRAMES: "${TZ_FOLLOW_ZOOM_MAX_PREDICT_FRAMES:-15}"
+      TZ_FOLLOW_ZOOM_SHOW_WINDOW_BOX: "${TZ_FOLLOW_ZOOM_SHOW_WINDOW_BOX:-true}"
+      TZ_FOLLOW_ZOOM_SMOOTHER: "${TZ_FOLLOW_ZOOM_SMOOTHER:-kalman}"
+    volumes:
+      - ./data:/data
+      # Writable and local: the checkpoint downloads into this app's own folder
+      # on first boot, so it survives a rebuild without being re-fetched.
+      - ./models/sam2:/opt/models/sam2
+    # The first boot downloads a few hundred MB of checkpoint, which is well
+    # past the default start_period; a short one would mark the container
+    # unhealthy and hold the frontend back for no reason.
+    healthcheck:
+      test: ["CMD-SHELL", "python3 -c \"import urllib.request,sys; sys.exit(0 if urllib.request.urlopen('http://localhost:8000/api/health',timeout=5).status==200 else 1)\""]
+      interval: 20s
+      timeout: 10s
+      retries: 5
+      start_period: 600s
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 1
+              capabilities: [gpu]
+
+  frontend:
+    build:
+      context: ./frontend
+    image: track_and_zoom-frontend:latest
+    restart: unless-stopped
+    ports:
+      - "${TZ_FRONTEND_PORT:-13082}:80"
+    depends_on:
+      backend:
+        condition: service_healthy
