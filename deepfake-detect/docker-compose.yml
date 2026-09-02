@@ -1,0 +1,24 @@
+services:
+  backend:
+    build:
+      context: ./backend
+    ports:
+      - "127.0.0.1:8043:8000"
+    volumes:
+      - ./models:/app/models:ro
+      - ./data/uploads:/app/data/uploads
+      - ./data/outputs:/app/data/outputs
+    environment:
+      - MODEL_PATH=/app/models/efficientnet_b0_ffpp_c23.pth
+      - FAKE_CLASS_INDEX=1
+      - FRAME_SAMPLE_FPS=10
+      - FACE_MARGIN=0.3
+      - FAKE_FRAME_THRESHOLD=0.6
+
+  frontend:
+    build:
+      context: ./frontend
+    ports:
+      - "3043:80"
+    depends_on:
+      - backend
