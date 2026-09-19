@@ -1,0 +1,11 @@
+opencv-python
+numpy
+pyyaml
+transformers==4.37.2
+torch
+torchvision
+openai
+requests 
+verovio
+tiktoken 
+accelerate

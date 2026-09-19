@@ -1,0 +1,227 @@
+{
+  "input_path": "cctv.mp4",
+  "media_type": "video",
+  "frame_count_analyzed": 3,
+  "frames": [
+    {
+      "frame_index": 0,
+      "timestamp_sec": 0.0,
+      "analysis": {
+        "scene_description": "A busy city street during a heavy rainstorm, with traffic congestion and a large overpass above. The weather is visibly rainy, and the scene appears to be in a densely populated urban area.",
+        "objects": [
+          {
+            "label": "traffic light",
+            "description": "A red traffic light is illuminated on a pole, indicating stop for vehicles.",
+            "approx_location": "left side of the image"
+          },
+          {
+            "label": "overpass",
+            "description": "A large concrete overpass spans across the top of the image.",
+            "approx_location": "top of the image"
+          },
+          {
+            "label": "buildings",
+            "description": "A multi-story building with a sign that reads 'MOUSE' is visible in the background.",
+            "approx_location": "center"
+          },
+          {
+            "label": "vehicles",
+            "description": "A dense line of cars, buses, and a truck are stopped in traffic, all appearing wet and obscured by rain.",
+            "approx_location": "center and foreground"
+          },
+          {
+            "label": "trees",
+            "description": "Several trees are visible on the right side of the image, their leaves blurred by the rain.",
+            "approx_location": "right side"
+          },
+          {
+            "label": "road signs",
+            "description": "A triangular warning sign with a yellow triangle and a black border is visible on the left.",
+            "approx_location": "left side"
+          }
+        ],
+        "people": [
+          {
+            "description": "A person is visible on the far left edge of the image, partially obscured by the traffic and the overpass.",
+            "identity_guess": null,
+            "confidence": "low"
+          }
+        ],
+        "entities_or_brands": [
+          "MOUSE"
+        ],
+        "ocr_text": [
+          "MOUSE"
+        ],
+        "notable_details": "The scene is characterized by heavy rainfall, causing the vehicles and surroundings to be wet and the visibility to be low. The traffic is heavily congested, with many vehicles stopped. The overpass and the building in the background are prominent features of the urban environment."
+      }
+    },
+    {
+      "frame_index": 30,
+      "timestamp_sec": 1.0,
+      "analysis": {
+        "scene_description": "A busy city street during a heavy rainstorm, with traffic congestion and a pedestrian crossing under an overpass.",
+        "objects": [
+          {
+            "label": "traffic light",
+            "description": "A red traffic light is illuminated, indicating stop for vehicles.",
+            "approx_location": "left side of the image"
+          },
+          {
+            "label": "overpass",
+            "description": "A concrete overpass spans across the top of the image.",
+            "approx_location": "top of the image"
+          },
+          {
+            "label": "traffic sign",
+            "description": "A triangular warning sign with a black border and a white triangle containing a black symbol.",
+            "approx_location": "left side of the image"
+          },
+          {
+            "label": "vehicle",
+            "description": "A large white truck with a cargo container and a red triangular warning sign on its side.",
+            "approx_location": "center of the image"
+          },
+          {
+            "label": "vehicle",
+            "description": "A yellow auto-rickshaw, likely a common mode of transport in the region.",
+            "approx_location": "right side of the image"
+          },
+          {
+            "label": "vehicle",
+            "description": "A black car with its headlights on, partially obscured by rain.",
+            "approx_location": "center of the image"
+          },
+          {
+            "label": "person",
+            "description": "A person holding an umbrella, standing on the left side of the image.",
+            "approx_location": "left side of the image"
+          },
+          {
+            "label": "person",
+            "description": "A person holding an umbrella, standing on the right side of the image.",
+            "approx_location": "right side of the image"
+          },
+          {
+            "label": "building",
+            "description": "A multi-story building with a sign that reads 'MOUNT' and 'MOUNT' in large letters.",
+            "approx_location": "center of the image"
+          },
+          {
+            "label": "tree",
+            "description": "A large tree with green leaves, located on the right side of the image.",
+            "approx_location": "right side of the image"
+          },
+          {
+            "label": "tree",
+            "description": "A palm tree visible behind the building.",
+            "approx_location": "background"
+          }
+        ],
+        "people": [
+          {
+            "description": "A person holding a black umbrella, standing on the left side of the image.",
+            "identity_guess": null,
+            "confidence": "low"
+          },
+          {
+            "description": "A person holding a black umbrella, standing on the right side of the image.",
+            "identity_guess": null,
+            "confidence": "low"
+          },
+          {
+            "description": "A person standing on the left side of the image, partially obscured by the umbrella.",
+            "identity_guess": null,
+            "confidence": "low"
+          }
+        ],
+        "entities_or_brands": [
+          "MOUNT"
+        ],
+        "ocr_text": [
+          "MOUNT",
+          "MOUNT"
+        ],
+        "notable_details": "The scene is characterized by heavy rainfall, with vehicles in a congested traffic situation. The overpass and the building with the 'MOUNT' sign are prominent features. The presence of multiple umbrellas suggests it is raining heavily."
+      }
+    },
+    {
+      "frame_index": 60,
+      "timestamp_sec": 2.0,
+      "analysis": {
+        "scene_description": "A busy urban street scene during a heavy rainstorm, with traffic congestion, vehicles, and a prominent overpass.",
+        "objects": [
+          {
+            "label": "traffic light",
+            "description": "A red traffic light with a horizontal bar above it, indicating stop.",
+            "approx_location": "left side of the image"
+          },
+          {
+            "label": "overpass",
+            "description": "A large concrete overpass spanning across the street.",
+            "approx_location": "top of the image"
+          },
+          {
+            "label": "buildings",
+            "description": "A multi-story building with a sign that reads 'MOUSE + WIRE' and another building with a sign that reads 'MOTOR' or similar.",
+            "approx_location": "center"
+          },
+          {
+            "label": "vehicles",
+            "description": "A dense line of cars, including sedans, a white truck, and a large container truck.",
+            "approx_location": "center and foreground"
+          },
+          {
+            "label": "trees",
+            "description": "Several trees with green leaves, partially obscuring the buildings and street.",
+            "approx_location": "right side"
+          },
+          {
+            "label": "signage",
+            "description": "A triangular warning sign with a black border and white triangle, likely indicating a hazard.",
+            "approx_location": "center, below the truck"
+          },
+          {
+            "label": "umbrellas",
+            "description": "Several people holding umbrellas, indicating rainy weather.",
+            "approx_location": "left side"
+          },
+          {
+            "label": "traffic signal",
+            "description": "A red traffic signal with a horizontal bar, indicating stop.",
+            "approx_location": "left side"
+          }
+        ],
+        "people": [
+          {
+            "description": "A person holding a black umbrella, likely a pedestrian.",
+            "identity_guess": null,
+            "action": "walking with an umbrella"
+          },
+          {
+            "description": "A person holding a black umbrella, likely a pedestrian.",
+            "identity_guess": null,
+            "action": "walking with an umbrella"
+          },
+          {
+            "description": "A person standing near a traffic light, possibly a pedestrian.",
+            "identity_guess": null,
+            "action": "standing near a traffic light"
+          }
+        ],
+        "entities_or_brands": [
+          "MOUSE + WIRE",
+          "MOTOR",
+          "DANTE"
+        ],
+        "ocr_text": [
+          "MOUSE + WIRE",
+          "MOTOR",
+          "DANTE",
+          "MOTOR"
+        ],
+        "notable_details": "The scene is under heavy rain, with a red traffic light indicating stop. The traffic is dense, with vehicles including cars, a container truck, and a white truck. There are several people holding umbrellas. The overpass is prominent in the background, and there are trees on the right side of the image."
+      }
+    }
+  ]
+}

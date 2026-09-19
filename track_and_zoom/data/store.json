@@ -1,0 +1,277 @@
+{
+  "clips": {
+    "53a5c8591afd": {
+      "clip_id": "53a5c8591afd",
+      "filename": "53a5c8591afd.mp4",
+      "display_name": "_probe.mp4",
+      "width": 640,
+      "height": 480,
+      "fps": 15.0,
+      "frame_count": 60,
+      "duration": 4.0,
+      "created_at": 1788241512.5355728
+    },
+    "0805bc874d40": {
+      "clip_id": "0805bc874d40",
+      "filename": "0805bc874d40.mp4",
+      "display_name": "_p2.mp4",
+      "width": 640,
+      "height": 480,
+      "fps": 15.0,
+      "frame_count": 45,
+      "duration": 3.0,
+      "created_at": 1788241565.4775727
+    },
+    "109d3504ca54": {
+      "clip_id": "109d3504ca54",
+      "filename": "109d3504ca54.mp4",
+      "display_name": "theft_video.mp4",
+      "width": 1280,
+      "height": 720,
+      "fps": 24.0,
+      "frame_count": 240,
+      "duration": 10.0,
+      "created_at": 1788241671.161128
+    },
+    "3a39093b2db6": {
+      "clip_id": "3a39093b2db6",
+      "filename": "3a39093b2db6.mp4",
+      "display_name": "theft_video.mp4",
+      "width": 1280,
+      "height": 720,
+      "fps": 24.0,
+      "frame_count": 240,
+      "duration": 10.0,
+      "created_at": 1788242640.3083045
+    },
+    "dec1e0c946f2": {
+      "clip_id": "dec1e0c946f2",
+      "filename": "dec1e0c946f2.mp4",
+      "display_name": "theft_video.mp4",
+      "width": 1280,
+      "height": 720,
+      "fps": 24.0,
+      "frame_count": 240,
+      "duration": 10.0,
+      "created_at": 1788243196.5896926
+    },
+    "6990740a8145": {
+      "clip_id": "6990740a8145",
+      "filename": "6990740a8145.mp4",
+      "display_name": "theft_video.mp4",
+      "width": 1280,
+      "height": 720,
+      "fps": 24.0,
+      "frame_count": 240,
+      "duration": 10.0,
+      "created_at": 1788243606.4040036
+    },
+    "2fa250bc4301": {
+      "clip_id": "2fa250bc4301",
+      "filename": "2fa250bc4301.mp4",
+      "display_name": "theft_video.mp4",
+      "width": 1280,
+      "height": 720,
+      "fps": 24.0,
+      "frame_count": 240,
+      "duration": 10.0,
+      "created_at": 1788243722.0949857
+    }
+  },
+  "renders": {
+    "53a5c8591afd": [
+      {
+        "render_id": "b5d46bccb4",
+        "clip_id": "53a5c8591afd",
+        "filename": "53a5c8591afd_b5d46bccb4.mp4",
+        "label": "probe",
+        "seed_frame_idx": 0,
+        "seed_box_norm": [
+          0.05625,
+          0.42917,
+          0.1625,
+          0.57083
+        ],
+        "frame_count": 60,
+        "fps": 15.0,
+        "frames_tracked": 60,
+        "frames_occluded": 0,
+        "zoom_w": 68,
+        "zoom_h": 68,
+        "created_at": 1788241537.6760101
+      }
+    ],
+    "0805bc874d40": [
+      {
+        "render_id": "0465caf465",
+        "clip_id": "0805bc874d40",
+        "filename": "0805bc874d40_0465caf465.mp4",
+        "label": "green probe",
+        "seed_frame_idx": 0,
+        "seed_box_norm": [
+          0.05625,
+          0.42917,
+          0.1625,
+          0.57083
+        ],
+        "frame_count": 45,
+        "fps": 15.0,
+        "frames_tracked": 45,
+        "frames_occluded": 0,
+        "zoom_w": 68,
+        "zoom_h": 68,
+        "created_at": 1788241578.4858785
+      }
+    ],
+    "109d3504ca54": [
+      {
+        "render_id": "cf5d0c87ba",
+        "clip_id": "109d3504ca54",
+        "filename": "109d3504ca54_cf5d0c87ba.mp4",
+        "label": "after deadlock fix",
+        "seed_frame_idx": 0,
+        "seed_box_norm": [
+          0.05,
+          0.25,
+          0.3,
+          0.85
+        ],
+        "frame_count": 240,
+        "fps": 24.0,
+        "frames_tracked": 116,
+        "frames_occluded": 124,
+        "zoom_w": 320,
+        "zoom_h": 432,
+        "created_at": 1788242195.672061
+      },
+      {
+        "render_id": "55c6409df3",
+        "clip_id": "109d3504ca54",
+        "filename": "109d3504ca54_55c6409df3.mp4",
+        "label": "bag, seeded on the chair",
+        "seed_frame_idx": 120,
+        "seed_box_norm": [
+          0.4219,
+          0.6708,
+          0.582,
+          0.8681
+        ],
+        "frame_count": 240,
+        "fps": 24.0,
+        "frames_tracked": 240,
+        "frames_occluded": 0,
+        "zoom_w": 205,
+        "zoom_h": 142,
+        "created_at": 1788242554.8618896
+      },
+      {
+        "render_id": "bad24b96e3",
+        "clip_id": "109d3504ca54",
+        "filename": "109d3504ca54_bad24b96e3.mp4",
+        "label": "bag + 1.15 padding",
+        "seed_frame_idx": 120,
+        "seed_box_norm": [
+          0.4219,
+          0.6708,
+          0.582,
+          0.8681
+        ],
+        "frame_count": 240,
+        "fps": 24.0,
+        "frames_tracked": 240,
+        "frames_occluded": 0,
+        "zoom_w": 236,
+        "zoom_h": 163,
+        "created_at": 1788243576.757386
+      }
+    ],
+    "3a39093b2db6": [
+      {
+        "render_id": "731d96bd6f",
+        "clip_id": "3a39093b2db6",
+        "filename": "3a39093b2db6_731d96bd6f.mp4",
+        "label": "75\u00d7118 @ 0.0s",
+        "seed_frame_idx": 0,
+        "seed_box_norm": [
+          0.22091505262586805,
+          0.43576108393364066,
+          0.27973858203763274,
+          0.5999752372518075
+        ],
+        "frame_count": 240,
+        "fps": 24.0,
+        "frames_tracked": 206,
+        "frames_occluded": 34,
+        "zoom_w": 75,
+        "zoom_h": 118,
+        "created_at": 1788242721.7213871
+      }
+    ],
+    "dec1e0c946f2": [
+      {
+        "render_id": "c5d45577b1",
+        "clip_id": "dec1e0c946f2",
+        "filename": "dec1e0c946f2_c5d45577b1.mp4",
+        "label": "88\u00d797 @ 0.0s",
+        "seed_frame_idx": 0,
+        "seed_box_norm": [
+          0.08815075858798102,
+          0.39128999254854324,
+          0.1567923114729159,
+          0.5256991264356029
+        ],
+        "frame_count": 240,
+        "fps": 24.0,
+        "frames_tracked": 240,
+        "frames_occluded": 0,
+        "zoom_w": 88,
+        "zoom_h": 97,
+        "created_at": 1788243291.2851825
+      }
+    ],
+    "6990740a8145": [
+      {
+        "render_id": "1f6850c572",
+        "clip_id": "6990740a8145",
+        "filename": "6990740a8145_1f6850c572.mp4",
+        "label": "99\u00d7106 @ 0.0s",
+        "seed_frame_idx": 0,
+        "seed_box_norm": [
+          0.08118715468704728,
+          0.3842157636933589,
+          0.15878196680003281,
+          0.5310047390455321
+        ],
+        "frame_count": 240,
+        "fps": 24.0,
+        "frames_tracked": 240,
+        "frames_occluded": 0,
+        "zoom_w": 114,
+        "zoom_h": 122,
+        "created_at": 1788243687.6733434
+      }
+    ],
+    "2fa250bc4301": [
+      {
+        "render_id": "ff25080632",
+        "clip_id": "2fa250bc4301",
+        "filename": "2fa250bc4301_ff25080632.mp4",
+        "label": "85\u00d7101 @ 0.0s",
+        "seed_frame_idx": 0,
+        "seed_box_norm": [
+          0.08516638944369094,
+          0.3965955376939479,
+          0.15181828700150887,
+          0.5363103516554614
+        ],
+        "frame_count": 240,
+        "fps": 24.0,
+        "frames_tracked": 240,
+        "frames_occluded": 0,
+        "zoom_w": 98,
+        "zoom_h": 116,
+        "created_at": 1788243806.2148967
+      }
+    ]
+  }
+}

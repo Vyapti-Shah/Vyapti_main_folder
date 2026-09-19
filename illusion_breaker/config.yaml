@@ -1,0 +1,34 @@
+paths:
+  input_dir: "./data/input"
+  output_dir: "./data/output"
+
+fft:
+  peak_radius: 10
+  threshold_ratio: 0.15
+
+gabor:
+  ksize: 31
+  sigma: 4.0
+  lambd: 10.0
+  gamma: 0.5
+
+ocr:
+  model_name: "stepfun-ai/GOT-OCR2_0"
+  device: "auto"   # auto-detects cuda:0 if available, else cpu
+  batch_size: 8
+  batch_timeout_sec: 0.2
+
+batch:
+  num_workers: 1
+  extensions: [".jpg", ".jpeg", ".png"]
+
+orientation:
+  blur_ksize: 9
+  blur_sigma: 2
+  min_mask_ratio: 0.005   # below this, treat as "found nothing" -> fallback
+
+classifier:
+  # Set to false for plain-text images (e.g. "OPTIC") so ring-shaped
+  # letters like O/Q/D aren't misread as digits 0/2/8. Keep true for
+  # images using the custom ring+bar pictographic digit style.
+  enable_ring_rules: true

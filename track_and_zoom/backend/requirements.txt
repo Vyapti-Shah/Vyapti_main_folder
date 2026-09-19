@@ -1,0 +1,25 @@
+# Standalone Track & Zoom.
+#
+# Torch/SAM2 are the heavy half and are what actually gate this running on GPU;
+# everything else is small. Pinned to match the parent application so a
+# checkpoint staged for one works for the other.
+fastapi==0.115.6
+uvicorn[standard]==0.34.0
+pydantic==2.10.4
+pydantic-settings==2.7.0
+python-multipart==0.0.20
+numpy==1.26.4
+opencv-python-headless==4.10.0.84
+
+# The tracker's runtime. In Docker these are installed FIRST from the CUDA
+# index (see the Dockerfile) and are already satisfied by the time this file is
+# read; listing them keeps the non-Docker path (./run.sh) working, where they
+# resolve to CPU wheels — correct for that path, just slow.
+torch==2.5.1
+torchvision==0.20.1
+
+# SAM2 itself is NOT listed here. A `sam2 @ git+https://...` direct reference
+# makes pip ignore the URL, look for `sam2` on PyPI, and fail with
+# "No matching distribution found for sam2 (unavailable)". It is installed as
+# its own explicit `pip install "git+..."` step instead — see the Dockerfile
+# and run.sh.

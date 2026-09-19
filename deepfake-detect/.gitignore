@@ -1,0 +1,23 @@
+# Model weights
+models/
+
+# Python
+venv/
+.venv/
+__pycache__/
+*.py[cod]
+.env
+
+# Node
+node_modules/
+dist/
+
+# Generated data
+input/
+data/uploads/*
+data/outputs/*
+!data/uploads/.gitkeep
+!data/outputs/.gitkeep
+
+# System files
+.DS_Store
