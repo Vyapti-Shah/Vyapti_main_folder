@@ -1,0 +1,32 @@
+FROM python:3.11-slim
+
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    libgl1 \
+    libglib2.0-0 \
+    ffmpeg \
+    git \
+    curl \
+    && rm -rf /var/lib/apt/lists/*
+
+WORKDIR /app
+
+COPY requirements.txt .
+RUN pip install --no-cache-dir --default-timeout=120 \
+    torch==2.4.1 torchvision==0.19.1
+RUN pip install --no-cache-dir --default-timeout=120 \
+    -r requirements.txt --no-build-isolation
+
+RUN mkdir -p checkpoints && \
+    curl -L -o checkpoints/sam2.1_hiera_small.pt \
+    https://dl.fbaipublicfiles.com/segment_anything_2/092824/sam2.1_hiera_small.pt
+
+COPY app ./app
+
+RUN mkdir -p /data/uploads /data/outputs
+
+ENV DATA_DIR=/data
+ENV PYTHONUNBUFFERED=1
+
+EXPOSE 8000
+
+CMD ["uvicorn", "app.main:app", "--host", "0.0.0.0", "--port", "8000"]

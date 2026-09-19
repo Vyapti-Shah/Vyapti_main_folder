@@ -1,0 +1,26 @@
+services:
+  backend:
+    build: ./backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./data:/data
+    environment:
+      - DATA_DIR=/data
+      - SAM2_MODEL_CFG=configs/sam2.1/sam2.1_hiera_s.yaml
+      - MOTION_WARMUP_FRAMES=90
+      - MOTION_MIN_AREA_PX=600
+      - SPEED_WINDOW_FRAMES=15
+      - MC_SAMPLES=5000
+      - STATIONARY_SPEED_THRESHOLD_KMH=3.0
+      - MIN_RELATIVE_MOTION=0.4
+    shm_size: '2gb'
+    restart: unless-stopped
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "5173:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
