@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<title>Copy-Move Forgery Detection</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<style>
+  :root {
+    --bg: #0f1115; --panel: #171a21; --border: #2a2f3a;
+    --text: #e8e9ec; --muted: #9aa1ad; --accent: #3d8bfd;
+    --green: #33c17a; --red: #ff5c5c;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; font-family: -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+    background: var(--bg); color: var(--text);
+  }
+  header { padding: 24px 32px; border-bottom: 1px solid var(--border); }
+  header h1 { margin: 0; font-size: 22px; }
+  header p { margin: 4px 0 0; color: var(--muted); font-size: 14px; }
+  main { max-width: 1100px; margin: 0 auto; padding: 24px 32px 64px; }
+
+  .dropzone {
+    border: 2px dashed var(--border); border-radius: 12px; padding: 40px;
+    text-align: center; cursor: pointer; transition: border-color .2s;
+    background: var(--panel);
+  }
+  .dropzone.drag { border-color: var(--accent); }
+  .dropzone p { color: var(--muted); margin: 8px 0 0; }
+  .dropzone input { display: none; }
+  button {
+    background: var(--accent); color: #fff; border: none; padding: 10px 20px;
+    border-radius: 8px; font-size: 14px; cursor: pointer; margin-top: 16px;
+  }
+  button:disabled { opacity: .5; cursor: not-allowed; }
+
+  .grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 28px; }
+  @media (max-width: 800px) { .grid { grid-template-columns: 1fr; } }
+
+  .card {
+    background: var(--panel); border: 1px solid var(--border); border-radius: 12px;
+    padding: 16px; overflow: hidden;
+  }
+  .card h3 { margin: 0 0 10px; font-size: 15px; color: var(--muted); font-weight: 600; }
+  .card img { width: 100%; border-radius: 8px; display: block; }
+
+  .legend { display: flex; gap: 16px; margin-top: 10px; font-size: 13px; color: var(--muted); }
+  .legend span { display: inline-flex; align-items: center; gap: 6px; }
+  .dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
+
+  .report { margin-top: 24px; background: var(--panel); border: 1px solid var(--border);
+    border-radius: 12px; padding: 20px; font-family: "SF Mono", Consolas, monospace; }
+  .report h2 { font-family: -apple-system, Segoe UI, Roboto, Arial, sans-serif; margin-top: 0; }
+  .stat-row { display: flex; justify-content: space-between; padding: 6px 0;
+    border-bottom: 1px solid var(--border); font-size: 13px; }
+  .stat-row span:first-child { color: var(--muted); }
+
+  .verdict { margin-top: 16px; padding: 14px 16px; border-radius: 8px; font-weight: 600;
+    font-family: -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+  .verdict.bad { background: rgba(255,92,92,.12); color: var(--red); border: 1px solid rgba(255,92,92,.35); }
+  .verdict.good { background: rgba(51,193,122,.12); color: var(--green); border: 1px solid rgba(51,193,122,.35); }
+
+  .region { margin-top: 14px; padding: 12px; border: 1px solid var(--border); border-radius: 8px;
+    font-size: 13px; }
+  .region h4 { margin: 0 0 8px; font-family: -apple-system, Segoe UI, Roboto, Arial, sans-serif; }
+  .confbar { height: 6px; border-radius: 4px; background: #262b35; margin-top: 8px; overflow: hidden; }
+  .confbar > div { height: 100%; background: var(--accent); }
+
+  .loading { display: none; margin-top: 20px; color: var(--muted); font-size: 14px; }
+  .error { color: var(--red); margin-top: 16px; font-size: 14px; }
+</style>
+</head>
+<body>
+<header>
+  <h1>🔍 Copy-Move Forgery (Cloning) Detection</h1>
+  <p>Upload an image to detect regions copied and pasted within itself — source in green, cloned/destination in red.</p>
+</header>
+
+<main>
+  <div class="dropzone" id="dropzone">
+    <p style="color: var(--text); font-size: 16px; font-weight: 600;">Click to upload or drag & drop an image</p>
+    <p>JPG, PNG — max 15MB</p>
+    <input type="file" id="fileInput" accept="image/*" />
+    <button id="analyzeBtn" disabled>Analyze Image</button>
+  </div>
+
+  <div class="loading" id="loading">⏳ Extracting features, matching, verifying geometry…</div>
+  <div class="error" id="error"></div>
+
+  <div class="grid" id="imgGrid" style="display:none;">
+    <div class="card">
+      <h3>Annotated Result</h3>
+      <img id="annotatedImg" />
+      <div class="legend">
+        <span><span class="dot" style="background:var(--green)"></span>Source region</span>
+        <span><span class="dot" style="background:var(--red)"></span>Cloned / destination region</span>
+      </div>
+    </div>
+    <div class="card">
+      <h3>Forgery Mask</h3>
+      <img id="maskImg" />
+      <div class="legend">
+        <span><span class="dot" style="background:#7d7d7d"></span>Source (gray)</span>
+        <span><span class="dot" style="background:#fff"></span>Cloned (white)</span>
+      </div>
+    </div>
+  </div>
+
+  <div class="report" id="reportBox" style="display:none;">
+    <h2>CLONING DETECTION REPORT</h2>
+    <div class="stat-row"><span>Filename</span><span id="rFilename">-</span></div>
+    <div class="stat-row"><span>Total Features Detected</span><span id="rKp">-</span></div>
+    <div class="stat-row"><span>Potential Feature Matches</span><span id="rRaw">-</span></div>
+    <div class="stat-row"><span>Matches After Ratio Test</span><span id="rRatio">-</span></div>
+    <div class="stat-row"><span>Matches After Distance Filter</span><span id="rDist">-</span></div>
+    <div class="stat-row"><span>Matches After Geometric Verification (RANSAC)</span><span id="rGeo">-</span></div>
+    <div class="stat-row"><span>Suspicious Region Pairs</span><span id="rPairs">-</span></div>
+    <div class="stat-row"><span>Overall Confidence</span><span id="rConf">-</span></div>
+    <div id="verdictBox"></div>
+    <div id="regionsBox"></div>
+  </div>
+</main>
+
+<script>
+const API_URL = window.CMFD_API_URL || "http://localhost:8000";
+
+const dropzone = document.getElementById("dropzone");
+const fileInput = document.getElementById("fileInput");
+const analyzeBtn = document.getElementById("analyzeBtn");
+const loading = document.getElementById("loading");
+const errorBox = document.getElementById("error");
+let selectedFile = null;
+
+dropzone.addEventListener("click", () => fileInput.click());
+dropzone.addEventListener("dragover", (e) => { e.preventDefault(); dropzone.classList.add("drag"); });
+dropzone.addEventListener("dragleave", () => dropzone.classList.remove("drag"));
+dropzone.addEventListener("drop", (e) => {
+  e.preventDefault(); dropzone.classList.remove("drag");
+  if (e.dataTransfer.files.length) { selectedFile = e.dataTransfer.files[0]; onFileChosen(); }
+});
+fileInput.addEventListener("change", () => {
+  if (fileInput.files.length) { selectedFile = fileInput.files[0]; onFileChosen(); }
+});
+
+function onFileChosen() {
+  analyzeBtn.disabled = false;
+  errorBox.textContent = "";
+  const p = dropzone.querySelector("p");
+  p.textContent = "Selected: " + selectedFile.name;
+}
+
+analyzeBtn.addEventListener("click", async () => {
+  if (!selectedFile) return;
+  errorBox.textContent = "";
+  loading.style.display = "block";
+  document.getElementById("imgGrid").style.display = "none";
+  document.getElementById("reportBox").style.display = "none";
+  analyzeBtn.disabled = true;
+
+  const form = new FormData();
+  form.append("image", selectedFile);
+
+  try {
+    const res = await fetch(`${API_URL}/api/detect`, { method: "POST", body: form });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || "Detection failed");
+    renderResult(data);
+  } catch (err) {
+    errorBox.textContent = "❌ " + err.message;
+  } finally {
+    loading.style.display = "none";
+    analyzeBtn.disabled = false;
+  }
+});
+
+function renderResult(data) {
+  document.getElementById("annotatedImg").src = "data:image/png;base64," + data.annotated_image_b64;
+  document.getElementById("maskImg").src = "data:image/png;base64," + data.mask_image_b64;
+  document.getElementById("imgGrid").style.display = "grid";
+
+  document.getElementById("rFilename").textContent = data.filename;
+  document.getElementById("rKp").textContent = data.total_keypoints.toLocaleString();
+  document.getElementById("rRaw").textContent = data.raw_matches.toLocaleString();
+  document.getElementById("rRatio").textContent = data.matches_after_ratio_test.toLocaleString();
+  document.getElementById("rDist").textContent = data.matches_after_distance_filter.toLocaleString();
+  document.getElementById("rGeo").textContent = data.matches_after_geometric_verification.toLocaleString();
+  document.getElementById("rPairs").textContent = data.region_pairs.length;
+  document.getElementById("rConf").textContent = data.overall_confidence + "%";
+
+  const verdictBox = document.getElementById("verdictBox");
+  const isBad = data.region_pairs.length > 0;
+  verdictBox.innerHTML = `<div class="verdict ${isBad ? "bad" : "good"}">${data.verdict}</div>`;
+
+  const regionsBox = document.getElementById("regionsBox");
+  regionsBox.innerHTML = "";
+  data.region_pairs.forEach((r, i) => {
+    const div = document.createElement("div");
+    div.className = "region";
+    div.innerHTML = `
+      <h4>Region Pair ${i + 1} — Confidence ${r.confidence}%</h4>
+      <div>Source bbox (x,y,w,h): ${r.source_bbox.join(", ")}</div>
+      <div>Cloned/Destination bbox (x,y,w,h): ${r.destination_bbox.join(", ")}</div>
+      <div>Inlier matches: ${r.num_matches} | Displacement: (${r.displacement[0].toFixed(1)}, ${r.displacement[1].toFixed(1)})</div>
+      <div class="confbar"><div style="width:${r.confidence}%"></div></div>
+    `;
+    regionsBox.appendChild(div);
+  });
+
+  document.getElementById("reportBox").style.display = "block";
+}
+</script>
+</body>
+</html>
