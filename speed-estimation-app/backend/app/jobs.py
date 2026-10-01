@@ -95,7 +95,7 @@ def _run_pipeline(job_id: str, video_path: Path, req: CalibrationRequest):
         _set_status(job_id, "running", 0.05, "Finding moving objects and tracking with SAM2")
 
         def progress_cb(frac):
-            _set_status(job_id, "running", 0.05 + 0.6 * frac, "Tracking with SAM2 (this is the slow step, especially on CPU)")
+            _set_status(job_id, "running", 0.05 + 0.6 * frac, "Tracking with SAM2")
 
         tracks = run_sam2_tracking(
             str(video_path),
