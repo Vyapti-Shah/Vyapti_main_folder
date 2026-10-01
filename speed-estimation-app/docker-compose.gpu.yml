@@ -3,11 +3,13 @@ services:
     build:
       context: ./backend
       dockerfile: Dockerfile.gpu
+    environment:
+      - USE_SAM2=1
+    shm_size: '4gb'
     deploy:
       resources:
         reservations:
           devices:
             - driver: nvidia
-              count: 1
+              count: all
               capabilities: [gpu]
-    shm_size: '4gb'

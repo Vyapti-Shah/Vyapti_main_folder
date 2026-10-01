@@ -119,7 +119,7 @@ export default function App() {
             <table className="results-table">
               <thead>
                 <tr>
-                  <th>ID</th><th>Object</th><th>Speed</th><th>95% confidence range</th>
+                  <th>ID</th><th>Object</th><th>Speed</th>
                   <th>Duration</th><th>Distance</th><th>Detection confidence</th>
                 </tr>
               </thead>
@@ -128,8 +128,14 @@ export default function App() {
                   <tr key={t.track_id}>
                     <td>#{t.track_id}</td>
                     <td>{t.class_name}</td>
-                    <td><strong>{t.mean_speed_kmh.toFixed(1)} km/h</strong></td>
-                    <td>{t.ci95_low_kmh.toFixed(1)} – {t.ci95_high_kmh.toFixed(1)} km/h</td>
+                    <td>
+                      <span className={`speed-badge speed-${t.speed_band}`}>
+                        {Math.round(t.mean_speed_kmh)}<span className="speed-unit">km/h</span>
+                      </span>
+                      <div className="speed-range">
+                        {t.ci95_low_kmh.toFixed(0)}–{t.ci95_high_kmh.toFixed(0)} km/h (95% CI)
+                      </div>
+                    </td>
                     <td>{t.elapsed_s.toFixed(1)} s</td>
                     <td>{t.distance_m.toFixed(1)} m</td>
                     <td>{(t.tracking_confidence * 100).toFixed(0)}%</td>
@@ -137,6 +143,13 @@ export default function App() {
                 ))}
               </tbody>
             </table>
+          )}
+          {report.speed_band_thresholds_kmh && movingTracks.length > 0 && (
+            <p className="hint legend">
+              <span className="dot speed-slow" /> slow (&lt;{report.speed_band_thresholds_kmh.slow} km/h)
+              <span className="dot speed-moderate" /> moderate
+              <span className="dot speed-fast" /> fast (&ge;{report.speed_band_thresholds_kmh.fast} km/h)
+            </p>
           )}
           {movingTracks.some((t) => t.known_class_size === false) && (
             <p className="hint">

@@ -6,17 +6,23 @@ uncertainty → annotated video + report + charts.
 
 ## Run it
 
-CPU (works everywhere, slower):
 ```
-docker compose up --build
-```
-
-GPU (NVIDIA, needs the [nvidia-container-toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html) on the host):
-```
-docker compose -f docker-compose.yml -f docker-compose.gpu.yml up --build
+./run.sh
 ```
 
-Then open **http://localhost:5173**. The backend API is on **http://localhost:8000/api** (also reverse-proxied under `/api` by the frontend's nginx).
+Uses the GPU automatically if an NVIDIA GPU and the
+[nvidia-container-toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/latest/install-guide.html)
+are available (SAM2 tracking is much faster on GPU), and falls back to CPU
+otherwise — no flags to remember. Any extra arguments are passed straight
+through to `docker compose`, e.g. `./run.sh -d` or `./run.sh down`.
+
+To force one or the other instead of auto-detecting:
+```
+docker compose -f docker-compose.yml up --build                           # CPU only
+docker compose -f docker-compose.yml -f docker-compose.gpu.yml up --build  # GPU only
+```
+
+Then open **http://localhost:18432**. The backend API is on **http://localhost:18765/api** (also reverse-proxied under `/api` by the frontend's nginx).
 
 ## How to use it
 

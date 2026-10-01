@@ -111,3 +111,44 @@ video {
   margin-bottom: 10px;
   background: black;
 }
+
+/* Color-coded speed readout: a big bold pill (green/amber/red by speed
+   band) plus a smaller muted confidence-range line underneath. */
+.speed-badge {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 4px;
+  padding: 3px 10px;
+  border-radius: 999px;
+  font-size: 17px;
+  font-weight: 700;
+  color: #0f1115;
+  white-space: nowrap;
+}
+.speed-badge .speed-unit {
+  font-size: 11px;
+  font-weight: 600;
+  opacity: 0.75;
+}
+.speed-slow { background: #34d399; }
+.speed-moderate { background: #f5a623; }
+.speed-fast { background: #f25c54; }
+.speed-range {
+  margin-top: 3px;
+  font-size: 11px;
+  color: #9aa0a6;
+}
+.legend {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.legend .dot {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-left: 10px;
+}
+.legend .dot:first-child { margin-left: 0; }

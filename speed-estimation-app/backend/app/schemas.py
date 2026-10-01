@@ -49,6 +49,7 @@ class TrackSpeedResult(BaseModel):
     speed_series_kmh: List[float]
     time_series_s: List[float]
     known_class_size: Optional[bool] = None  # auto mode only: was the class size assumption a known prior?
+    speed_band: str = "moderate"  # "slow" | "moderate" | "fast" -- for color-coded display
 
 
 class Report(BaseModel):
@@ -60,3 +61,6 @@ class Report(BaseModel):
     calibration_rmse_px: Optional[float] = None
     tracks: List[TrackSpeedResult]
     evaluation: Optional[dict] = None
+    # Boundaries (km/h) used for the speed_band color coding: below "slow"
+    # is green, up to "fast" is amber, at/above "fast" is red.
+    speed_band_thresholds_kmh: Optional[dict] = None

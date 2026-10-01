@@ -1,0 +1,38 @@
+services:
+  backend:
+    build:
+      context: ./backend
+      args:
+        MODEL_URL: ${MODEL_URL:-https://github.com/SCLBD/DeepfakeBench/releases/download/v1.0.1/effnb4_best.pth}
+    container_name: deepfake-backend
+    ports:
+      - "${BACKEND_PORT:-8001}:8000"   # host port -> FastAPI (Swagger at /docs)
+    volumes:
+      - outputs:/app/outputs           # annotated videos/images, shared with the frontend
+    environment:
+      - MODEL_PATH=/app/models/effnb4_best.pth
+      - SAMPLE_FPS=5
+      - CLIP_LEN=8
+      - MAX_SAMPLES=240
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request;urllib.request.urlopen('http://localhost:8000/health')"]
+      interval: 15s
+      timeout: 5s
+      retries: 20
+      start_period: 90s
+    restart: unless-stopped
+
+  frontend:
+    build: ./frontend
+    container_name: deepfake-frontend
+    ports:
+      - "${FRONTEND_PORT:-3000}:80"    # host port -> dashboard
+    volumes:
+      - outputs:/usr/share/nginx/html/outputs:ro
+    depends_on:
+      backend:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  outputs:

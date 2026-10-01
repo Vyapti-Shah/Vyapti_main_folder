@@ -15,11 +15,14 @@ from app.config import (
     MIN_RELATIVE_MOTION,
     MOTION_WARMUP_FRAMES,
     MOTION_MIN_AREA_PX,
+    SPEED_BAND_SLOW_KMH,
+    SPEED_BAND_FAST_KMH,
 )
 from app.pipeline.calibration import compute_homography
 from app.pipeline.sam2_video_tracker import run_sam2_tracking
 from app.pipeline.tracker import TrackData
 from app.pipeline.speed import compute_speed_series, compute_speed_series_auto, reject_outliers_mad
+from app.pipeline.speed_bands import speed_band
 from app.pipeline.uncertainty import estimate_uncertainty, estimate_uncertainty_auto
 from app.pipeline.annotate import render_annotated_video
 from app.pipeline.report import (
@@ -77,6 +80,7 @@ def _run_pipeline(job_id: str, video_path: Path, req: CalibrationRequest):
     try:
         manual = req.calibration_mode == "manual" and req.image_points and req.world_points
         calib = None
+        calibration_polygon = [(p.x, p.y) for p in req.image_points] if manual else None
 
         if manual:
             _set_status(job_id, "running", 0.02, "Calibrating ground plane (manual)")
@@ -113,10 +117,12 @@ def _run_pipeline(job_id: str, video_path: Path, req: CalibrationRequest):
                 calibration_mode="manual" if manual else "auto",
                 calibration_rmse_px=calib.rmse_px if manual else None,
                 tracks=[], evaluation=None,
+                speed_band_thresholds_kmh={"slow": SPEED_BAND_SLOW_KMH, "fast": SPEED_BAND_FAST_KMH},
             )
             REPORTS[job_id] = report
             out_video_path = OUTPUT_DIR / f"{job_id}_annotated.mp4"
-            render_annotated_video(str(video_path), str(out_video_path), {}, {}, fps_override=fps)
+            render_annotated_video(str(video_path), str(out_video_path), {}, {}, fps_override=fps,
+                                    calibration_polygon=calibration_polygon)
             _set_status(job_id, "done", 1.0, "Complete — no moving objects detected in this video")
             return
 
@@ -203,6 +209,7 @@ def _run_pipeline(job_id: str, video_path: Path, req: CalibrationRequest):
                 speed_series_kmh=speed_series,
                 time_series_s=time_series,
                 known_class_size=known_class,
+                speed_band=speed_band(unc.mean_speed_kmh),
             )
             track_results.append(tr)
             speed_lookup[tid] = _make_lookup(time_series, speed_series, unc.std_kmh)
@@ -211,7 +218,8 @@ def _run_pipeline(job_id: str, video_path: Path, req: CalibrationRequest):
         out_video_path = OUTPUT_DIR / f"{job_id}_annotated.mp4"
         moving_track_ids = {tr.track_id for tr in track_results}
         moving_tracks = {tid: tdata for tid, tdata in tracks.items() if tid in moving_track_ids}
-        render_annotated_video(str(video_path), str(out_video_path), moving_tracks, speed_lookup, fps_override=fps)
+        render_annotated_video(str(video_path), str(out_video_path), moving_tracks, speed_lookup, fps_override=fps,
+                                calibration_polygon=calibration_polygon)
 
         _set_status(job_id, "running", 0.93, "Building report and charts")
         charts_dir = OUTPUT_DIR / job_id
@@ -236,6 +244,7 @@ def _run_pipeline(job_id: str, video_path: Path, req: CalibrationRequest):
             calibration_rmse_px=calib.rmse_px if manual else None,
             tracks=track_results,
             evaluation=evaluation,
+            speed_band_thresholds_kmh={"slow": SPEED_BAND_SLOW_KMH, "fast": SPEED_BAND_FAST_KMH},
         )
         REPORTS[job_id] = report
 

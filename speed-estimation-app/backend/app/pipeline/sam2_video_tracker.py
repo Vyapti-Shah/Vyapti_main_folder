@@ -7,18 +7,33 @@ propagates memory-based masks forward AND backward through the whole video
 the bottom-of-mask point as the ground-contact point (better than a bbox
 bottom-center for irregular/rotated objects).
 
+The forward pass runs in chunks (MOTION_RESCAN_INTERVAL_FRAMES apart) and,
+at each chunk boundary, rescans for newly-moving regions that aren't
+already covered by a currently-tracked object's box. Any match becomes a
+new SAM2 object from that point forward. Without this, only objects already
+moving during the initial warm-up window would ever be tracked -- anything
+that enters the frame, or starts moving, later in the clip would be missed
+entirely. (The initial anchor-seeded objects still get a backward pass too,
+covering frames before the warm-up window.)
+
 Runs on CPU or GPU — CPU is just much slower, since SAM2 does real
 per-frame segmentation rather than a lightweight bbox regression.
 """
 import os
 import shutil
 import tempfile
-from typing import Dict, Optional
+from typing import Dict, List, Optional
 
 import cv2
 import numpy as np
 
-from app.config import SAM2_CHECKPOINT, SAM2_MODEL_CFG
+from app.config import (
+    SAM2_CHECKPOINT,
+    SAM2_MODEL_CFG,
+    MOTION_MAX_OBJECTS,
+    MOTION_RESCAN_INTERVAL_FRAMES,
+    MOTION_NEW_OBJECT_IOU_THRESH,
+)
 from app.pipeline.motion_detector import detect_moving_object_boxes
 from app.pipeline.tracker import TrackData, FrameObs
 
@@ -67,12 +82,15 @@ def _mask_to_bbox_and_ground(mask: np.ndarray):
 
 def _record_frame(tracks: Dict[int, TrackData], frame_idx: int, obj_ids, mask_logits, fps: float):
     for i, obj_id in enumerate(obj_ids):
+        tdata = tracks[obj_id]
+        if tdata.observations and tdata.observations[-1].frame_idx == frame_idx:
+            continue  # already recorded (chunk boundaries get revisited)
         mask = (mask_logits[i] > 0.0).cpu().numpy().squeeze()
         result = _mask_to_bbox_and_ground(mask)
         if result is None:
             continue
         bbox, ground_px = result
-        tracks[obj_id].observations.append(
+        tdata.observations.append(
             FrameObs(
                 frame_idx=frame_idx,
                 time_s=frame_idx / fps,
@@ -83,6 +101,19 @@ def _record_frame(tracks: Dict[int, TrackData], frame_idx: int, obj_ids, mask_lo
                 conf=1.0,
             )
         )
+
+
+def _latest_bboxes(tracks: Dict[int, TrackData], upto_frame_idx: int) -> List[np.ndarray]:
+    """Each currently-active track's most recent known box at or before
+    `upto_frame_idx`, used to tell a rescan candidate apart from an object
+    SAM2 is already tracking."""
+    boxes = []
+    for tdata in tracks.values():
+        for o in reversed(tdata.observations):
+            if o.frame_idx <= upto_frame_idx:
+                boxes.append(o.bbox)
+                break
+    return boxes
 
 
 def run_sam2_tracking(
@@ -96,10 +127,10 @@ def run_sam2_tracking(
     fps = fps_override or cap.get(cv2.CAP_PROP_FPS) or 30.0
     cap.release()
 
-    anchor_idx, boxes = detect_moving_object_boxes(
-        video_path, warmup_frames=warmup_frames, min_area_px=min_area_px
+    anchor_idx, seed_boxes, scanner = detect_moving_object_boxes(
+        video_path, warmup_frames=warmup_frames, min_area_px=min_area_px, max_boxes=MOTION_MAX_OBJECTS
     )
-    if not boxes:
+    if not seed_boxes:
         return {}
 
     predictor = _lazy_predictor()
@@ -114,35 +145,75 @@ def run_sam2_tracking(
         device = "cuda" if torch.cuda.is_available() else "cpu"
         autocast_dtype = torch.bfloat16 if device == "cuda" else torch.float32
 
-        tracks: Dict[int, TrackData] = {
-            obj_id: TrackData(track_id=obj_id, class_name="object") for obj_id in range(len(boxes))
-        }
+        tracks: Dict[int, TrackData] = {}
+        next_obj_id = 0
 
         with torch.inference_mode(), torch.autocast(device, dtype=autocast_dtype):
             state = predictor.init_state(video_path=frames_dir)
 
-            for obj_id, box in enumerate(boxes):
+            for box in seed_boxes:
                 predictor.add_new_points_or_box(
-                    inference_state=state, frame_idx=anchor_idx, obj_id=obj_id, box=box,
+                    inference_state=state, frame_idx=anchor_idx, obj_id=next_obj_id, box=box,
                 )
+                tracks[next_obj_id] = TrackData(track_id=next_obj_id, class_name="object")
+                next_obj_id += 1
 
+            expected_total_steps = n_frames + (anchor_idx if anchor_idx > 0 else 0)
             done_steps = 0
-            for frame_idx, obj_ids, mask_logits in predictor.propagate_in_video(state, start_frame_idx=anchor_idx):
-                _record_frame(tracks, frame_idx, obj_ids, mask_logits, fps)
-                done_steps += 1
-                if progress_cb:
-                    progress_cb(min(0.9, done_steps / max(n_frames, 1)))
 
+            # Backward pass first, while only the initial anchor-seeded
+            # objects exist in the predictor state -- objects discovered
+            # later via forward rescanning never existed before their own
+            # discovery frame, so they must never be asked to explain
+            # frames earlier than that.
             if anchor_idx > 0:
                 for frame_idx, obj_ids, mask_logits in predictor.propagate_in_video(
                     state, start_frame_idx=anchor_idx, reverse=True
                 ):
                     if frame_idx == anchor_idx:
-                        continue  # already recorded in the forward pass
+                        continue  # recorded by the forward pass below instead
                     _record_frame(tracks, frame_idx, obj_ids, mask_logits, fps)
                     done_steps += 1
                     if progress_cb:
-                        progress_cb(min(0.9, done_steps / max(n_frames, 1)))
+                        progress_cb(min(0.9, done_steps / max(expected_total_steps, 1)))
+
+            # Forward pass in chunks, rescanning for newly-appearing moving
+            # objects at each chunk boundary.
+            chunk_start = anchor_idx
+            while chunk_start < n_frames - 1:
+                chunk_len = min(MOTION_RESCAN_INTERVAL_FRAMES, n_frames - 1 - chunk_start)
+                for frame_idx, obj_ids, mask_logits in predictor.propagate_in_video(
+                    state, start_frame_idx=chunk_start, max_frame_num_to_track=chunk_len, reverse=False
+                ):
+                    _record_frame(tracks, frame_idx, obj_ids, mask_logits, fps)
+                    done_steps += 1
+                    if progress_cb:
+                        progress_cb(min(0.9, done_steps / max(expected_total_steps, 1)))
+                chunk_end = chunk_start + chunk_len
+
+                if next_obj_id < MOTION_MAX_OBJECTS:
+                    for i in range(chunk_start + 1, chunk_end + 1):
+                        frame = cv2.imread(os.path.join(frames_dir, f"{i:06d}.jpg"))
+                        if frame is not None:
+                            scanner.feed(frame)
+
+                    existing = _latest_bboxes(tracks, chunk_end)
+                    fresh_boxes = scanner.new_boxes(
+                        existing,
+                        min_area_px=min_area_px,
+                        max_boxes=MOTION_MAX_OBJECTS,
+                        iou_thresh=MOTION_NEW_OBJECT_IOU_THRESH,
+                    )
+                    for box in fresh_boxes:
+                        if next_obj_id >= MOTION_MAX_OBJECTS:
+                            break
+                        predictor.add_new_points_or_box(
+                            inference_state=state, frame_idx=chunk_end, obj_id=next_obj_id, box=box,
+                        )
+                        tracks[next_obj_id] = TrackData(track_id=next_obj_id, class_name="object")
+                        next_obj_id += 1
+
+                chunk_start = chunk_end
 
         return {tid: t for tid, t in tracks.items() if t.observations}
     finally:

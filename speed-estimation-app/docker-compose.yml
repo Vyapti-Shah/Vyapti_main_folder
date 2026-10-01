@@ -2,7 +2,7 @@ services:
   backend:
     build: ./backend
     ports:
-      - "8000:8000"
+      - "18765:8000"
     volumes:
       - ./data:/data
     environment:
@@ -20,7 +20,7 @@ services:
   frontend:
     build: ./frontend
     ports:
-      - "5173:80"
+      - "18432:80"
     depends_on:
       - backend
     restart: unless-stopped
