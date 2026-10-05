@@ -1,0 +1,7 @@
+ultralytics>=8.3.0,<9
+lapx>=0.5.5
+opencv-python-headless
+numpy
+fastapi>=0.115.6
+uvicorn[standard]
+python-multipart

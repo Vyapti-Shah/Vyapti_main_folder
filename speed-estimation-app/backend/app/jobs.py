@@ -18,6 +18,7 @@ from app.config import (
     SPEED_BAND_SLOW_KMH,
     SPEED_BAND_FAST_KMH,
 )
+from app.pipeline.video_info import probe_video
 from app.pipeline.calibration import compute_homography
 from app.pipeline.sam2_video_tracker import run_sam2_tracking
 from app.pipeline.tracker import TrackData
@@ -94,22 +95,19 @@ def _run_pipeline(job_id: str, video_path: Path, req: CalibrationRequest):
 
         _set_status(job_id, "running", 0.05, "Finding moving objects and tracking with SAM2")
 
+        probed_fps, n_frames = probe_video(str(video_path))
+        fps = req.fps_override or probed_fps
+
         def progress_cb(frac):
             _set_status(job_id, "running", 0.05 + 0.6 * frac, "Tracking with SAM2")
 
         tracks = run_sam2_tracking(
             str(video_path),
-            fps_override=req.fps_override,
+            fps_override=fps,
             progress_cb=progress_cb,
             warmup_frames=MOTION_WARMUP_FRAMES,
             min_area_px=MOTION_MIN_AREA_PX,
         )
-
-        import cv2
-        cap = cv2.VideoCapture(str(video_path))
-        fps = req.fps_override or cap.get(cv2.CAP_PROP_FPS) or 30.0
-        n_frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
-        cap.release()
 
         if not tracks:
             report = Report(

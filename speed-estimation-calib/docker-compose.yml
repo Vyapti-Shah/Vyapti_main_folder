@@ -1,0 +1,41 @@
+services:
+  backend:
+    build:
+      context: ./backend
+      args:
+        YOLO_MODEL: ${YOLO_MODEL:-yolo11s.pt}
+    environment:
+      YOLO_MODEL: ${YOLO_MODEL:-yolo11s.pt}
+      DATA_DIR: /data
+    volumes:
+      - speed_data:/data
+    ports:
+      - "8001:8000"          # API + interactive docs at http://localhost:8001/docs
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "python", "-c", "import urllib.request as u; u.urlopen('http://localhost:8000/api/health')"]
+      interval: 20s
+      timeout: 5s
+      retries: 10
+      start_period: 90s
+    # --- NVIDIA GPU (optional): install the CUDA build of torch in backend/Dockerfile, then uncomment ---
+    # deploy:
+    #   resources:
+    #     reservations:
+    #       devices:
+    #         - driver: nvidia
+    #           count: all
+    #           capabilities: [gpu]
+
+  frontend:
+    build: ./frontend
+    ports:
+      - "8080:80"            # open http://localhost:8080
+    depends_on:
+      - backend
+    volumes:
+      - speed_data:/data:ro  # nginx serves videos / frames / results straight from disk (HTTP range support)
+    restart: unless-stopped
+
+volumes:
+  speed_data:

@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Speed Estimation</title>
+<link rel="stylesheet" href="styles.css">
+</head>
+<body>
+<header class="top">
+  <h1>Speed Estimation</h1>
+  <ol id="stepper">
+    <li>Upload</li><li>Calibrate</li><li>Detect</li><li>Results</li>
+  </ol>
+</header>
+
+<main>
+  <!-- 1 · Upload -->
+  <section id="step-upload" class="card">
+    <h2>Upload your video</h2>
+    <p class="muted">Fixed cameras (CCTV, tripod) give the best results. A still image shows detections only, since speed needs time.</p>
+    <label class="drop" id="drop">
+      <input type="file" id="file" accept="video/*,image/*" hidden>
+      <span class="btn primary">Choose Video</span>
+      <span class="muted">or drop a file here</span>
+    </label>
+    <div class="bar" id="up-bar" hidden><i></i></div>
+    <p id="up-msg" class="muted"></p>
+    <p class="error" id="err-upload"></p>
+  </section>
+
+  <!-- 2 · Calibration -->
+  <section id="step-calib" class="card" hidden>
+    <h2>Calibration</h2>
+    <p class="muted" id="vid-meta"></p>
+    <p class="warn" id="cam-warn" hidden>⚠️ Camera appears to be moving. Speed estimates may be less accurate.</p>
+
+    <div class="reco">💡 We recommend <b>Known-distance calibration</b>: it gives the highest accuracy for CCTV and other fixed cameras.</div>
+    <h3>How do you want to calibrate?</h3>
+    <div class="modes" role="radiogroup">
+      <button class="mode active" data-mode="known_distance" role="radio" aria-checked="true">
+        <b>Known-distance calibration</b><span>Draw two lines on the road and enter real distances.</span><em class="tag">Recommended</em>
+      </button>
+      <button class="mode" data-mode="camera_params" role="radio" aria-checked="false">
+        <b>Known camera parameters</b><span>Camera height, tilt and field of view.</span>
+      </button>
+      <button class="mode" data-mode="automatic" role="radio" aria-checked="false">
+        <b>Automatic calibration</b><span>Scale estimated from typical object sizes.</span><em class="tag exp">Experimental</em>
+      </button>
+    </div>
+
+    <!-- Mode 1 -->
+    <div id="panel-known_distance" class="panel">
+      <p><b>Draw TWO lines on the road.</b> Click and drag for each straight line. Drag an end-point to rotate or resize it, or drag the line to move it.</p>
+      <div class="canvas-wrap"><canvas id="cv"></canvas></div>
+      <p class="muted" id="draw-status"></p>
+      <div class="row">
+        <button class="btn" id="redrawA">Redraw Line A</button>
+        <button class="btn" id="redrawB">Redraw Line B</button>
+        <button class="btn" id="clearLines">Clear both</button>
+      </div>
+      <h3>Enter the real distances</h3>
+      <div class="fields">
+        <label>P1 → P2 (Line A length)<span class="unit"><input id="lenA" type="number" min="0" step="any" value="20"> metres</span></label>
+        <label>P4 → P3 (Line B length)<span class="unit"><input id="lenB" type="number" min="0" step="any" value="20"> metres</span></label>
+        <label>P1 → P4 (distance between the lines, along the road)<span class="unit"><input id="sep" type="number" min="0" step="any" value="30"> metres</span></label>
+      </div>
+      <p class="tip">Tip: Use road markings, lane boundaries, or other points whose real-world distance you know. Draw both lines in the same direction (P1 and P4 on the same side of the road).</p>
+    </div>
+
+    <!-- Mode 2 -->
+    <div id="panel-camera_params" class="panel" hidden>
+      <div class="reco small">Mode 1 is more accurate. <button class="link" data-switch="known_distance">Switch to Known-distance calibration</button></div>
+      <div class="fields">
+        <label>Camera height<span class="unit"><input id="camH" type="number" min="0" step="any" value="6"> metres</span></label>
+        <label>Camera angle (tilt below horizontal)<span class="unit"><input id="tilt" type="number" min="1" max="90" step="any" value="30"> degrees</span></label>
+        <label>Lens given as
+          <select id="lensType"><option value="fov">Horizontal field of view</option><option value="mm">Focal length + sensor width</option></select></label>
+        <label id="lens-fov">Horizontal field of view<span class="unit"><input id="hfov" type="number" min="5" max="170" step="any" value="70"> degrees</span></label>
+        <label id="lens-mm" hidden>Focal length<span class="unit"><input id="focalMm" type="number" min="0" step="any" value="4"> mm</span></label>
+        <label id="lens-mm2" hidden>Sensor width<span class="unit"><input id="sensorMm" type="number" min="0" step="any" value="6.4"> mm</span></label>
+      </div>
+      <p class="tip">Camera position is not needed: speed only depends on how far an object moves, not where the camera stands. Assumes flat ground and no roll.</p>
+    </div>
+
+    <!-- Mode 3 -->
+    <div id="panel-automatic" class="panel" hidden>
+      <div class="reco small">Mode 1 is more accurate. <button class="link" data-switch="known_distance">Switch to Known-distance calibration</button></div>
+      <p class="warn">Experimental. Scale is inferred from average object heights (person 1.7 m, car 1.5 m …), so expect errors of ±20% or more.</p>
+      <div class="fields">
+        <label>Assumed horizontal field of view<span class="unit"><input id="autoFov" type="number" min="5" max="170" step="any" value="70"> degrees</span></label>
+      </div>
+    </div>
+
+    <details class="settings">
+      <summary>Detection settings</summary>
+      <div class="chips">
+        <label><input type="checkbox" class="cls" value="car" checked> 🚗 Cars</label>
+        <label><input type="checkbox" class="cls" value="truck" checked> 🚚 Trucks</label>
+        <label><input type="checkbox" class="cls" value="bus" checked> 🚌 Buses</label>
+        <label><input type="checkbox" class="cls" value="motorcycle" checked> 🏍 Motorcycles</label>
+        <label><input type="checkbox" class="cls" value="bicycle" checked> 🚲 Bicycles</label>
+        <label><input type="checkbox" class="cls" value="person" checked> 🧍 People</label>
+        <label><input type="checkbox" class="cls" value="train" checked> 🚆 Trains</label>
+      </div>
+      <div class="fields">
+        <label>Detection resolution<select id="imgsz"><option value="640">Fast (640)</option><option value="960">Balanced (960)</option><option value="1280">Accurate (1280)</option></select></label>
+        <label>Frames processed<select id="stride"><option value="1">Every frame</option><option value="2">Every 2nd frame</option><option value="3">Every 3rd frame</option></select></label>
+        <label>Speed smoothing window<select id="win"><option value="0.6">0.6 s (responsive)</option><option value="1" selected>1 s (recommended)</option><option value="2">2 s (steady)</option></select></label>
+        <label>Minimum confidence<select id="conf"><option value="0.2">0.20</option><option value="0.3" selected>0.30</option><option value="0.5">0.50</option></select></label>
+      </div>
+    </details>
+
+    <p class="error" id="err-calib"></p>
+    <div class="row end"><button class="btn primary" id="btn-calibrate">Calibrate</button></div>
+  </section>
+
+  <!-- 3 · Calibration summary -->
+  <section id="step-confirm" class="card" hidden>
+    <h2>Calibration</h2>
+    <ul class="checks" id="confirm-checks"></ul>
+    <div class="acc">Estimated accuracy: <span id="confirm-acc" class="badge"></span></div>
+    <ul class="warns" id="confirm-warns"></ul>
+    <p class="error" id="err-confirm"></p>
+    <div class="row end">
+      <button class="btn" id="btn-back">Edit calibration</button>
+      <button class="btn primary" id="btn-start">Start Detection</button>
+    </div>
+  </section>
+
+  <!-- 4 · Running -->
+  <section id="step-run" class="card" hidden>
+    <h2>Detecting and tracking</h2>
+    <div class="bar"><i id="bar"></i></div>
+    <p class="muted" id="run-status">Queued…</p>
+    <p class="error" id="err-run"></p>
+    <div class="dash" id="dash"><div class="dash-title">SPEED ESTIMATION</div><div id="dash-rows"><p class="muted dim">Waiting for objects…</p></div></div>
+  </section>
+
+  <!-- 5 · Results -->
+  <section id="step-results" class="card" hidden>
+    <h2>Results</h2>
+    <video id="res-video" controls playsinline></video>
+    <div class="table-wrap"><table id="res-table"></table></div>
+    <div class="row">
+      <a class="btn" id="dl-tracks" download>Download summary (CSV)</a>
+      <a class="btn" id="dl-traj" download>Download trajectories (CSV)</a>
+      <button class="btn primary push" id="btn-new">New analysis</button>
+    </div>
+  </section>
+
+  <!-- Image result -->
+  <section id="step-image" class="card" hidden>
+    <h2>Detections</h2>
+    <p class="warn">A single image has no time dimension, so speed can't be computed. Upload a video to measure speed.</p>
+    <img id="img-out" alt="Annotated detections">
+    <div class="table-wrap"><table id="img-table"></table></div>
+    <div class="row"><button class="btn primary push" id="btn-new2">New analysis</button></div>
+  </section>
+</main>
+<script src="app.js"></script>
+</body>
+</html>
