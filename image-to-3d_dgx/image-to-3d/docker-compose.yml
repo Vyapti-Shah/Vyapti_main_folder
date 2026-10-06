@@ -1,0 +1,48 @@
+x-gpu: &gpu
+  deploy:
+    resources:
+      reservations:
+        devices:
+          - driver: nvidia
+            count: all
+            capabilities: [gpu]
+
+services:
+  frontend:
+    build: ./frontend
+    ports: ["8080:80"]
+    depends_on: [backend]
+
+  backend:
+    build: ./backend
+    <<: *gpu
+    environment:
+      DATA_DIR: /data
+      SMPLX_DIR: /models/smpl
+      TRELLIS_URL: http://trellis:9001
+      HUNYUAN_URL: http://hunyuan:9002
+    volumes:
+      - ./data:/data
+      - ./models/smpl:/models/smpl:ro
+    expose: ["8000"]
+
+  trellis:
+    build: ./workers/trellis
+    profiles: ["trellis"]
+    <<: *gpu
+    environment:
+      KEEP_LOADED: "0"
+      HF_HOME: /models/hf
+    volumes:
+      - ./models/hf:/models/hf
+    expose: ["9001"]
+
+  hunyuan:
+    build: ./workers/hunyuan
+    <<: *gpu
+    environment:
+      KEEP_LOADED: "0"
+      HF_HOME: /models/hf
+    volumes:
+      - ./models/hf:/models/hf
+    expose: ["9002"]

@@ -1,0 +1,10 @@
+fastapi
+uvicorn[standard]
+python-multipart
+scipy
+pillow
+ultralytics
+trimesh>=4.4
+smplx
+httpx
+pydantic
