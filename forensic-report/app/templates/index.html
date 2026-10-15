@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>Forensic Video Report</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="/static/report.css">
+<style>
+  form { border: 1px solid #e4e4e4; padding: 16px; margin-bottom: 28px; }
+  label { display: block; margin: 12px 0 4px; font-weight: 600; }
+  input[type=text] { width: 100%; padding: 7px; border: 1px solid #ccc; }
+  button { margin-top: 16px; padding: 9px 18px; background: #3a6ea5; color: #fff; border: 0; cursor: pointer; font-size: 14px; }
+  li { margin: 6px 0; }
+</style>
+</head>
+<body>
+<div class="page">
+  <h1>Forensic Video Report</h1>
+  <p class="desc">Upload one or more videos. A report is built automatically and updates live while frames are extracted.</p>
+  <form action="/cases" method="post" enctype="multipart/form-data">
+    <label for="title">Report title</label>
+    <input type="text" id="title" name="title" value="Reference" required>
+    <label for="reference">Reference photo (optional)</label>
+    <input type="file" id="reference" name="reference" accept="image/*">
+    <label for="videos">Videos</label>
+    <input type="file" id="videos" name="videos" accept="video/*" multiple required>
+    <button type="submit">Create report</button>
+  </form>
+
+  <h1>Existing reports <sup>({{ cases|length }})</sup></h1>
+  <ul>
+    {% for c in cases %}
+    <li><a href="/case/{{ c.id }}">{{ c.title }}</a> – {{ c.videos|length }} video(s), {{ c.status }}, {{ c.created }}</li>
+    {% else %}
+    <li>None yet.</li>
+    {% endfor %}
+  </ul>
+</div>
+</body>
+</html>

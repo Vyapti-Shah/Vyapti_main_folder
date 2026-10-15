@@ -1,0 +1,34 @@
+* { box-sizing: border-box; }
+body { margin: 0; background: #fff; color: #222; font: 14px/1.4 "Open Sans", "Segoe UI", Arial, sans-serif; }
+.page { max-width: 900px; margin: 0 auto; padding: 24px 16px 60px; }
+.nav { font-size: 12px; color: #777; }
+.nav a { color: #3a6ea5; }
+.live { color: #c0392b; margin-left: 12px; }
+h1 { font-size: 22px; font-weight: 400; margin: 18px 0 6px; }
+h1 sup { font-size: 12px; font-weight: 600; }
+.desc { margin: 0 0 14px; color: #333; }
+.lbl { margin: 8px 0 6px; }
+.refphoto { display: inline-block; border: 1px solid #ccc; padding: 4px; margin-bottom: 18px; }
+.refphoto img { display: block; max-width: 190px; max-height: 220px; }
+
+.card { margin: 0 0 24px; border: 1px solid #e4e4e4; }
+.card-head { background: #f1f1f1; padding: 7px 10px; border-bottom: 1px solid #e4e4e4; font-weight: 700; display: flex; gap: 14px; }
+.card-head .num { font-weight: 400; color: #666; font-size: 11px; padding-top: 2px; }
+.card-body { display: flex; padding: 12px 14px 4px; gap: 22px; }
+.icon { width: 94px; height: 116px; border: 1px solid #ddd; display: flex; align-items: center; justify-content: center; flex: 0 0 auto; }
+.meta { border-collapse: collapse; flex: 1; font-size: 12.5px; }
+.meta td { padding: 6px 8px; border-bottom: 1px solid #e8e8e8; vertical-align: top; }
+.meta td.ic { width: 22px; color: #666; text-align: center; padding-right: 0; }
+.meta td:first-child { width: 22px; }
+.meta td.k { width: 140px; color: #555; }
+.meta td.v { word-break: break-word; }
+.meta .mono { font-family: ui-monospace, Menlo, monospace; font-size: 11px; }
+.err { color: #c0392b; }
+
+.grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px 20px; padding: 14px; }
+.grid figure { margin: 0; text-align: center; }
+.grid img { width: 100%; display: block; background: #222; aspect-ratio: 16/9; object-fit: cover; }
+.grid figcaption { font-size: 12px; color: #444; margin-top: 4px; }
+
+@media print { .nav { display: none; } .card { break-inside: avoid-page; } }
+@media (max-width: 640px) { .grid { grid-template-columns: repeat(2, 1fr); } .card-body { flex-direction: column; } }

@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<title>{{ case.title }} – Video report</title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet" href="/static/report.css">
+</head>
+<body>
+<div class="page" id="report">
+  <p class="nav"><a href="/">&larr; All reports</a> · <a href="#" onclick="window.print();return false;">Print / save as PDF</a>
+    {% if case.status != 'done' %}<span class="live">● live – updating</span>{% endif %}</p>
+
+  <h1>Videos in report "{{ case.title }}" <sup>({{ case.videos|length }})</sup></h1>
+  <p class="desc">All videos in this report, sorted by time in ascending order.
+    {% if case.reference %}Reference photo path {{ case.reference.name }}.{% endif %}</p>
+
+  {% if case.reference %}
+  <p class="lbl">Reference photo:</p>
+  <div class="refphoto"><img src="/media/{{ case.reference.file }}" alt="Reference photo"></div>
+  {% endif %}
+
+  {% for v in case.videos %}
+  <section class="card">
+    <div class="card-head"><span class="num">{{ loop.index }}</span><span class="title">{{ v.filename }}</span></div>
+    <div class="card-body">
+      <div class="icon">
+        <svg viewBox="0 0 24 24" width="88" height="88"><path fill="#8aab1c" d="M6 2h9l5 5v13a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2z"/><path fill="#fff" d="M8 11h6v5H8zM14.5 12.7l2.5-1.5v4.6l-2.5-1.5z"/></svg>
+      </div>
+      <table class="meta">
+        <tr><th></th><td class="k">Filename</td><td class="v"><b><u>{{ v.filename }}</u></b></td></tr>
+        <tr><th></th><td class="k">Path</td><td class="v">{{ v.path }}</td></tr>
+        {% if v.status in ('queued',) %}
+        <tr><td></td><td class="k">Status</td><td class="v">Queued…</td></tr>
+        {% elif v.status == 'failed' %}
+        <tr><td></td><td class="k">Status</td><td class="v err">Failed: {{ v.error }}</td></tr>
+        {% else %}
+        <tr><td></td><td class="k">Size</td><td class="v"><b>{{ v.size }}</b></td></tr>
+        <tr><td class="ic">&#9719;</td><td class="k">Created</td><td class="v"><b>{{ v.created }}</b></td></tr>
+        <tr><td class="ic">&#9719;</td><td class="k">Modified</td><td class="v"><b>{{ v.modified }}</b></td></tr>
+        <tr><td class="ic">&#9719;</td><td class="k">Accessed</td><td class="v"><b>{{ v.accessed }}</b></td></tr>
+        <tr><td class="ic">&#9719;</td><td class="k">Recorded</td><td class="v"><b>{{ v.recorded }}</b></td></tr>
+        <tr><td class="ic">&#9719;</td><td class="k">Duration</td><td class="v"><b>{{ v.duration }}</b></td></tr>
+        <tr><td class="ic">&harr;</td><td class="k">Width</td><td class="v"><b>{{ v.width }} px</b></td></tr>
+        <tr><td class="ic">&varr;</td><td class="k">Height</td><td class="v"><b>{{ v.height }} px</b></td></tr>
+        <tr><td></td><td class="k">Framerate</td><td class="v"><b>{{ v.framerate }}</b></td></tr>
+        <tr><td></td><td class="k">Codec</td><td class="v"><b>{{ v.codec }}</b></td></tr>
+        <tr><td></td><td class="k">SHA-256</td><td class="v mono"><b>{{ v.sha256 }}</b></td></tr>
+        {% endif %}
+      </table>
+    </div>
+    {% if v.frames %}
+    <div class="grid">
+      {% for f in v.frames %}
+      <figure><img loading="lazy" src="/media/{{ f.file }}" alt="Frame {{ f.n }}"><figcaption>{{ f.n }}. &nbsp;{{ f.ts }}</figcaption></figure>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </section>
+  {% endfor %}
+</div>
+{% if case.status != 'done' %}
+<script>
+// Live update: re-fetch the report every 3s while processing and swap in the new content.
+const t = setInterval(async () => {
+  const r = await fetch(location.href); const html = await r.text();
+  const doc = new DOMParser().parseFromString(html, 'text/html');
+  document.getElementById('report').innerHTML = doc.getElementById('report').innerHTML;
+  if (!doc.querySelector('.live')) clearInterval(t);
+}, 3000);
+</script>
+{% endif %}
+</body>
+</html>

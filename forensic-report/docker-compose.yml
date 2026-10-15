@@ -1,0 +1,14 @@
+services:
+  app:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      DATA_DIR: /data
+      FRAME_INTERVAL_SEC: "5"      # sampling interval (auto-raised so a video yields <= MAX_FRAMES)
+      MAX_FRAMES: "200"
+    volumes:
+      - report_data:/data
+
+volumes:
+  report_data:
