@@ -1,0 +1,8 @@
+{
+  "fake_threshold": 0.6,
+  "real_threshold": 0.4,
+  "selection_method": "initial_manual",
+  "rationale": "No labelled evaluation has been run yet, so there is no evidence the model's sigmoid output is calibrated (i.e. that a 0.7 output means ~70% of such cases are actually fake). A single 0.5 cut-off would silently treat near-boundary, low-evidence outputs as confident decisions. Until scripts/evaluate.py has run on a labelled validation set and chosen thresholds for a real precision/recall trade-off, these are placeholder, deliberately asymmetric-from-0.5 thresholds that carve out a declared INCONCLUSIVE band ([0.4, 0.6]) instead of forcing every borderline case into REAL or FAKE.",
+  "selected_on": null,
+  "source_eval": null
+}

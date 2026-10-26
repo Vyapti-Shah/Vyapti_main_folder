@@ -1,0 +1,46 @@
+services:
+  backend:
+    build: ./backend
+    environment:
+      MODEL_ID: ${MODEL_ID:-buildborderless/CommunityForensics-DeepfakeDet-ViT}
+      MODEL_REVISION: ${MODEL_REVISION:-main}
+      TORCH_NUM_THREADS: ${TORCH_NUM_THREADS:-0}
+      HF_HOME: /models
+      ALLOWED_ORIGINS: ${ALLOWED_ORIGINS:-http://localhost:${FRONTEND_PORT:-3100},http://127.0.0.1:${FRONTEND_PORT:-3100},http://localhost:5173}
+      MAX_IMAGE_MB: ${MAX_IMAGE_MB:-20}
+      MAX_VIDEO_MB: ${MAX_VIDEO_MB:-200}
+      VIDEO_SAMPLE_INTERVAL_SECONDS: ${VIDEO_SAMPLE_INTERVAL_SECONDS:-1.0}
+      VIDEO_MAX_DURATION_SECONDS: ${VIDEO_MAX_DURATION_SECONDS:-120}
+      VIDEO_MAX_FRAMES: ${VIDEO_MAX_FRAMES:-60}
+    volumes:
+      - model-cache:/models
+    ports:
+      - "${BACKEND_PORT:-8000}:8000"
+    healthcheck:
+      # /ready is 503 until the model is loaded and validated (and stays 503 if loading failed)
+      test: ["CMD", "python", "-c", "import urllib.request as u; u.urlopen('http://localhost:8000/ready', timeout=4)"]
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 300s   # first run downloads the model
+    restart: unless-stopped
+
+  frontend:
+    build: ./frontend
+    depends_on:
+      # Not service_healthy: the frontend serves immediately and surfaces "model not ready"
+      # as a clear 503 from the backend if someone analyzes a file before it's loaded,
+      # rather than leaving the page blank for the minutes a first-run model download takes.
+      backend:
+        condition: service_started
+    ports:
+      - "${FRONTEND_PORT:-3100}:80"
+    healthcheck:
+      test: ["CMD", "wget", "-qO-", "http://127.0.0.1/"]
+      interval: 15s
+      timeout: 5s
+      retries: 3
+    restart: unless-stopped
+
+volumes:
+  model-cache:
